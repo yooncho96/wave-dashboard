@@ -174,7 +174,7 @@ body{font-family:var(--fn);background:var(--bg);color:var(--ch);min-height:100vh
   </div>
   <div class="hdr-meta">
     <div id="disp-updated">Last updated: -</div>
-    <div style="opacity:.7">Target n=20</div>
+    <div class="sync-bar" id="sync-bar" style="background:rgba(255,255,255,.15);border:none;padding:2px 8px;border-radius:99px;margin-top:3px;display:inline-flex;align-items:center;gap:5px;justify-content:flex-end"><div class="dot dot-busy"></div><span class="sync-txt" style="color:rgba(255,255,255,.85);font-size:.62rem">Connecting...</span></div>
   </div>
 </div>
 <div class="tabs" id="tabBar">
@@ -190,7 +190,6 @@ body{font-family:var(--fn);background:var(--bg);color:var(--ch);min-height:100vh
 <div class="main">
 <div id="panel-overview" class="pnl on">
 <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-overview" placeholder="Free notes..."></textarea></div>
-<div class="sync-bar"><div class="dot dot-busy"></div><span class="sync-txt">Connecting to shared storage...</span></div>
 <div class="irbb"><div style="font-size:22px">&#128203;</div><div><div class="irbt">IRB: STUDY00007049 &middot; Active</div><div class="irbs">Single-arm exploratory pilot &middot; 6-week protocol &middot; iOS (TestFlight)</div></div></div>
 <div class="sg"><div class="sc c-teal"><div class="sv" id="s-enr">4</div><div class="sl">Enrolled</div></div><div class="sc c-sal"><div class="sv" id="s-act">3</div><div class="sl">Active</div></div><div class="sc c-grn"><div class="sv" id="s-cmp">0</div><div class="sl">Completed</div></div><div class="sc c-red"><div class="sv" id="s-drp">1</div><div class="sl">Dropped</div></div></div>
 <div class="card">
@@ -297,7 +296,7 @@ body{font-family:var(--fn);background:var(--bg);color:var(--ch);min-height:100vh
 </div>
 <div class="wfs"><div class="wfh" data-wf="wf1">Contact &amp; Communication Setup <span>&#9660;</span></div><div class="wfb" id="wf1"><div class="wnote">Team number: <strong>512-523-5284</strong> (iPlum). Students register via invite from YJ.</div><strong>Incoming calls (9am-9pm):</strong><ul><li>Press 9 &rarr; Adriana &rarr; Andrew &rarr; voicemail</li><li>Non-business hours &rarr; voicemail</li><li>Save 512-523-5284 so you answer it</li></ul><strong>Texts/voicemails:</strong><ul><li>Participants can text us, we cannot text back</li><li>All copied to wave-project&#64;austin.utexas.edu</li><li>Respond within 24h</li></ul><strong>Adding shared inbox (Outlook):</strong><ol><li>Settings &rarr; Accounts &rarr; [+] &rarr; Open Shared Mailbox</li><li>Search "WAVE Team" or wave-project&#64;austin.utexas.edu</li></ol><strong>Email templates:</strong><ol><li>Download from Teams: MAIN &gt; QUICK ACCESS &gt; Email template files</li><li>In Outlook: Mail from Template &rarr; select template</li></ol></div></div>
 <div class="wfs"><div class="wfh" data-wf="wf2">Screening Participants (JAY) <span>&#9660;</span></div><div class="wfb" id="wf2"><span class="own">Owner: Jay</span><ol><li>REDCap &rarr; new records where Participant Screener is green AND Auto Screener is empty</li><li>Complete auto-screener by confirming uploaded screenshot</li><li>Call or email invitation to schedule</li></ol></div></div>
-<div class="wfs"><div class="wfh" data-wf="wf3">Sending Invites for Intakes / Follow-ups (YJ) <span>&#9660;</span></div><div class="wfb" id="wf3"><span class="own">Owner: YJ</span><ol><strong>Step 1 - Find interviewer:</strong><li>Participants book via Google Calendar. Login: wave.utaustin / wavepilot2025</li><li>Check WAVE team doc for assigned interviewer &amp; supervisor</li></ol><strong>Step 2 - Send invite (Outlook, wave-project account):</strong><ol><li>New Event &rarr; "[Name] Intake" or "[Name] Follow-up" &rarr; invite interviewer + participant &rarr; Teams meeting &rarr; paste template &rarr; Send</li></ol><div class="sh">Intake email template</div><div class="tmpl">Welcome!
+<div class="wfs"><div class="wfh" data-wf="wf3">Sending Invites for Intakes / Follow-ups (YJ) <span>&#9660;</span></div><div class="wfb" id="wf3"><span class="own">Owner: YJ</span><br><strong>Step 1 - Find interviewer:</strong><ol><li>Participants book via Google Calendar. Login: wave.utaustin / wavepilot2025</li><li>Check WAVE team doc for assigned interviewer &amp; supervisor</li></ol><strong>Step 2 - Send invite (Outlook, wave-project account):</strong><ol><li>New Event &rarr; "[Name] Intake" or "[Name] Follow-up" &rarr; invite interviewer + participant &rarr; Teams meeting &rarr; paste template &rarr; Send</li></ol><div class="sh">Intake email template</div><div class="tmpl">Welcome!
 
 Thank you again for your interest in our study.
 
@@ -333,7 +332,7 @@ Your $*** reward will be sent shortly.
 
 Take care, ***
 WAVE Study Team</div></div></div>
-<div class="wfs"><div class="wfh" data-wf="wf8">Finances &amp; Budget <span>&#9660;</span></div><div class="wfb" id="wf8"><div class="wnote">HTRI Pilot Award &middot; Account#: 20-5601-1426</div><strong>To purchase:</strong><ol><li>Psychiatry Dept dashboard &rarr; get quote &rarr; submit purchase order</li></ol><strong>Participant incentives:</strong><ol><li>Cerebrum page &rarr; Participant Incentives &rarr; Tango account &rarr; quote &rarr; PO</li><li>Order gift cards in batches as enrollment grows</li></ol></div></div>
+<div class="wfs"><div class="wfh" data-wf="wf8">Finances &amp; Budget <span>&#9660;</span></div><div class="wfb" id="wf8"><div class="wnote">HTRI Pilot Award &middot; Account: 20-5601-1426</div><strong>To purchase:</strong><ol><li>Psychiatry Dept dashboard &rarr; get quote &rarr; submit purchase order</li></ol><strong>Participant incentives:</strong><ol><li>Cerebrum page &rarr; Participant Incentives &rarr; Tango account &rarr; quote &rarr; PO</li><li>Order gift cards in batches as enrollment grows</li></ol></div></div>
 <button id="fab">&#128279; Share</button>
 
 <div class="ov" id="ov-p"><div class="mo">
