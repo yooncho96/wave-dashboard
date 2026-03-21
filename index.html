@@ -103,20 +103,19 @@ body{font-family:var(--fn);background:var(--bg);color:var(--ch);min-height:100vh
 .tline{position:relative;padding-left:26px;}
 .tline::before{content:'';position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:var(--bdr);}
 .tli{position:relative;margin-bottom:4px;font-size:.77rem;display:flex;align-items:flex-start;gap:6px;}
-.tli-dot{position:absolute;left:-20px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--teal);border:2px solid #fff;box-shadow:0 0 0 2px var(--teal);flex-shrink:0;cursor:pointer;transition:transform .15s,box-shadow .15s;padding:0;}
-.tli-dot:hover{transform:scale(1.25);box-shadow:0 0 0 3px var(--teal);}
+.tli-dot{position:absolute;left:-20px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--teal);border:2px solid #fff;box-shadow:0 0 0 2px var(--teal);cursor:pointer;transition:transform .15s,box-shadow .15s;padding:0;}
+.tli-dot:hover{transform:scale(1.25);}
 .tli.fut .tli-dot{background:var(--g2);box-shadow:0 0 0 2px var(--g4);}
-.tli.fut .tli-dot:hover{box-shadow:0 0 0 3px var(--g4);}
 .tli-inner{flex:1;padding:4px 6px;border-radius:6px;cursor:text;transition:background .12s;}
 .tli-inner:hover{background:var(--teal-l);}
-.tld{font-size:.64rem;color:var(--teal);font-weight:800;margin-bottom:1px;outline:none;}
-.tli.fut .tld{color:var(--g4);}
-.tlt{color:var(--ch);line-height:1.4;outline:none;}
 .tli-drag{cursor:grab;color:var(--g4);font-size:.8rem;flex-shrink:0;padding:4px 2px;margin-top:2px;user-select:none;line-height:1;}
 .tli-drag:active{cursor:grabbing;}
 .tli.dragging{opacity:.35;}
 .tli.drag-over-above{border-top:2px solid var(--teal);margin-top:-2px;}
 .tli.drag-over-below{border-bottom:2px solid var(--teal);}
+.tld{font-size:.64rem;color:var(--teal);font-weight:800;margin-bottom:1px;outline:none;}
+.tli.fut .tld{color:var(--g4);}
+.tlt{color:var(--ch);line-height:1.4;outline:none;}
 .mr{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--bdr);font-size:.77rem;}
 .mr:last-child{border-bottom:none;}
 .md{font-size:.65rem;color:var(--g4);font-weight:700;min-width:68px;flex-shrink:0;}
@@ -147,7 +146,11 @@ body{font-family:var(--fn);background:var(--bg);color:var(--ch);min-height:100vh
 .irbb{background:linear-gradient(135deg,var(--teal-d),var(--teal));border-radius:var(--r);padding:13px 15px;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:11px;}
 .irbt{font-size:.95rem;font-weight:800;}
 .irbs{font-size:.69rem;color:rgba(255,255,255,.82);margin-top:2px;}
-
+.sync-bar{background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:7px 12px;margin-bottom:10px;font-size:.72rem;color:var(--mid);display:flex;align-items:center;gap:8px;}
+.sync-bar .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-ok{background:var(--green);}
+.dot-busy{background:var(--amber);}
+.dot-err{background:var(--red);}
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center;padding:14px;}
 .ov.open{display:flex;}
 .mo{background:#fff;border-radius:14px;padding:18px;width:100%;max-width:420px;box-shadow:0 12px 40px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto;}
@@ -174,7 +177,6 @@ body{font-family:var(--fn);background:var(--bg);color:var(--ch);min-height:100vh
     <div style="opacity:.7">Target n=20</div>
   </div>
 </div>
-
 <div class="tabs" id="tabBar">
   <button class="tb on" data-tab="overview">Overview</button>
   <button class="tb" data-tab="participants">Participants</button>
@@ -185,269 +187,153 @@ body{font-family:var(--fn);background:var(--bg);color:var(--ch);min-height:100vh
   <button class="tb" data-tab="meetings">Meetings</button>
   <button class="tb" data-tab="workflows">Workflows</button>
 </div>
-
 <div class="main">
-
 <div id="panel-overview" class="pnl on">
-  <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-overview" placeholder="Free notes..."></textarea></div>
-  <div class="irbb"><div style="font-size:22px">&#128203;</div><div><div class="irbt">IRB: STUDY00007049 &middot; Active</div><div class="irbs">Single-arm exploratory pilot &middot; 6-week protocol &middot; iOS (TestFlight)</div></div></div>
-  <div class="sg">
-    <div class="sc c-teal"><div class="sv" id="s-enr">4</div><div class="sl">Enrolled</div></div>
-    <div class="sc c-sal"><div class="sv" id="s-act">3</div><div class="sl">Active</div></div>
-    <div class="sc c-grn"><div class="sv" id="s-cmp">0</div><div class="sl">Completed</div></div>
-    <div class="sc c-red"><div class="sv" id="s-drp">1</div><div class="sl">Dropped</div></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128202;</div>Enrollment Progress</div>
-    <div class="pw"><div class="pl"><span>Phase 1 (n=20)</span><span id="p-pct">20%</span></div><div class="pb"><div class="pf" id="p-bar" style="width:20%"></div></div></div>
-    <div class="pw"><div class="pl"><span>Retention goal (10 retained)</span><span>0 / 10</span></div><div class="pb"><div class="pf" style="width:0%;background:linear-gradient(90deg,var(--green),#56d9a0)"></div></div></div>
-    <div class="pw"><div class="pl"><span>HTRI funds remaining <span style="font-size:.6rem;color:var(--g4);font-weight:600">(tap $ to edit)</span></span><span id="htri-val" contenteditable="true" style="cursor:text;border-radius:4px;padding:1px 4px;min-width:20px;outline:none;border-bottom:1px dashed var(--g4)" title="Click to edit">$5,740</span></div><div class="pb"><div class="pf" id="htri-bar" style="width:36%;background:linear-gradient(90deg,var(--salmon),#f7a882)"></div></div></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#9888;</div>Open Flags <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click text to edit)</span></div>
-    <div id="flags-list"></div>
-    <div class="brow"><button class="btn bt bs" id="btn-addFlag">+ Add Flag</button></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128197;</div>Study Timeline <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(tap text to edit)</span></div>
-    <div id="timeline-list"></div>
-    <div class="brow"><button class="btn bt bs" id="btn-addTL">+ Add Event</button></div>
-  </div>
+<div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-overview" placeholder="Free notes..."></textarea></div>
+<div class="sync-bar"><div class="dot dot-busy"></div><span class="sync-txt">Connecting to shared storage...</span></div>
+<div class="irbb"><div style="font-size:22px">&#128203;</div><div><div class="irbt">IRB: STUDY00007049 &middot; Active</div><div class="irbs">Single-arm exploratory pilot &middot; 6-week protocol &middot; iOS (TestFlight)</div></div></div>
+<div class="sg"><div class="sc c-teal"><div class="sv" id="s-enr">4</div><div class="sl">Enrolled</div></div><div class="sc c-sal"><div class="sv" id="s-act">3</div><div class="sl">Active</div></div><div class="sc c-grn"><div class="sv" id="s-cmp">0</div><div class="sl">Completed</div></div><div class="sc c-red"><div class="sv" id="s-drp">1</div><div class="sl">Dropped</div></div></div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128202;</div>Enrollment Progress</div>
+  <div class="pw"><div class="pl"><span>Phase 1 (n=20)</span><span id="p-pct">20%</span></div><div class="pb"><div class="pf" id="p-bar" style="width:20%"></div></div></div><div class="pw"><div class="pl"><span>Retention goal (10 retained)</span><span>0/10</span></div><div class="pb"><div class="pf" style="width:0%;background:linear-gradient(90deg,var(--green),#56d9a0)"></div></div></div><div class="pw"><div class="pl"><span>HTRI funds remaining <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(tap to edit)</span></span><span id="htri-val" contenteditable="true" style="cursor:text;border-radius:4px;padding:1px 4px;min-width:20px;outline:none;border-bottom:1px dashed var(--g4)">$5,740</span></div><div class="pb"><div class="pf" id="htri-bar" style="width:36%;background:linear-gradient(90deg,var(--salmon),#f7a882)"></div></div></div>
 </div>
-
-<div id="panel-participants" class="pnl">
-  <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-participants" placeholder="Free notes..."></textarea></div>
-  <div class="card">
-    <div class="ctitle" style="justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:8px"><div class="cicon">&#128161;</div>Legend</div>
-      <button class="btn bo bs" id="btn-csv">Export CSV</button>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:9px;font-size:.73rem;font-weight:600">
-      <span>&#128994; &ge;3 days/wk</span><span>&#128993; &lt;3 days/wk</span><span>&#128308; No use</span><span>&#11036; Pending</span><span>&#9989; Done</span><span>&#10060; Dropped</span>
-    </div>
-    <div style="margin-top:8px;font-size:.72rem;color:var(--mid)"><strong>Retained</strong> = used WAVE at least once per week, no two consecutive red weeks. Must complete all steps including post-session emotion rating.</div>
-  </div>
-  <div style="padding:0 2px 6px"><button class="btn bt bs" id="btn-addP">+ Add Participant</button></div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128100;</div>Participant Tracker</div>
-    <div style="overflow-x:auto"><table class="tbl"><thead><tr>
-      <th>WAVE ID</th><th style="text-align:center">Pre</th><th style="text-align:center">W1</th>
-      <th style="text-align:center">W2</th><th style="text-align:center">W3</th><th style="text-align:center">W4</th>
-      <th style="text-align:center">Post</th><th>Status</th><th></th>
-    </tr></thead><tbody id="ptbl"></tbody></table></div>
-  </div>
-  <div class="card">
-    <div class="ctitle" style="justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:8px"><div class="cicon">&#127873;</div>Gift Cards</div>
-      <span style="font-size:.63rem;font-weight:600;color:var(--g4)">(tap cell to cycle)</span>
-    </div>
-    <div style="overflow-x:auto"><table class="tbl"><thead><tr>
-      <th>WAVE ID</th><th style="text-align:center">W1 ($10)</th><th style="text-align:center">W2 ($15)</th>
-      <th style="text-align:center">W4 ($25)</th><th style="text-align:center">Post ($40)</th>
-    </tr></thead><tbody id="gctbl"></tbody></table></div>
-  </div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#9888;</div>Open Flags <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click text to edit)</span></div>
+  <div id="flags-list"></div><div class="brow"><button class="btn bt bs" id="btn-addFlag">+ Add Flag</button></div>
 </div>
-
-<div id="panel-recruitment" class="pnl">
-  <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-recruitment" placeholder="Free notes..."></textarea></div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128205;</div>Recruitment Sites <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click cells to edit)</span></div>
-    <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Site</th><th>Owner</th><th>Last Contact</th><th>Status</th><th>Notes</th><th></th></tr></thead><tbody id="rec-body"></tbody></table></div>
-    <div class="brow"><button class="btn bt bs" id="btn-addRec">+ Add Site</button></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128236;</div>Screening Workflow</div>
-    <ol style="padding-left:18px;font-size:.77rem;color:var(--mid);line-height:2.1">
-      <li>Jay checks REDCap for new screener submissions</li>
-      <li>Complete auto-screener (confirm uploaded screenshot)</li>
-      <li>Call or email invitation to schedule intake</li>
-      <li>YJ sends Teams calendar invite via Outlook template</li>
-      <li>Intake (~60 min): consent, C-SSRS, DERS-SF, app onboarding</li>
-      <li>Amos monitors weekly app usage; records in Participants tab</li>
-      <li>Adriana sends gift cards after qualifying weeks via Giftogram</li>
-    </ol>
-  </div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128197;</div>Study Timeline <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(tap to edit)</span></div>
+  <div id="timeline-list"></div><div class="brow"><button class="btn bt bs" id="btn-addTL">+ Add Event</button></div>
 </div>
-
-<div id="panel-team" class="pnl">
-  <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-team" placeholder="Free notes..."></textarea></div>
-  <div class="card"><div class="ctitle"><div class="cicon">&#128101;</div>Core Team</div><div class="tg"><div class="tc"><div class="tn">YJ (Yoon Jae Cho)</div><div class="tr">Co-Investigator / PI</div><div class="tav">Wed-Thu 6-8pm, Sun 7-8pm</div></div><div class="tc"><div class="tn">Young Shin Kim</div><div class="tr">Mentor / Supervising PI</div><div class="tav">-</div></div><div class="tc"><div class="tn">Adriana Desalos</div><div class="tr">Research Coordinator</div><div class="tav">Mon/Wed 5-6pm</div></div><div class="tc"><div class="tn">Amos</div><div class="tr">App usage monitoring</div><div class="tav">Mon/Sat 7-8pm</div></div><div class="tc"><div class="tn">Jay</div><div class="tr">Screening lead</div><div class="tav">Sun 7-8pm</div></div><div class="tc"><div class="tn">Andrew Tang</div><div class="tr">Coordination, consent</div><div class="tav">Mon/Thu 6pm</div></div><div class="tc"><div class="tn">Josh</div><div class="tr">Interview support</div><div class="tav">Mon 6pm, Wed 4-5pm</div></div><div class="tc"><div class="tn">Nermin</div><div class="tr">Interview support</div><div class="tav">Mon/Thu 4-7pm</div></div></div></div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128197;</div>Availability Grid <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click cells to edit)</span></div>
-    <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Time</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th></th></tr></thead><tbody id="avail-body"></tbody></table></div>
-    <div class="brow"><button class="btn bt bs" id="btn-addAvail">+ Add Row</button></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128279;</div>Key Contacts</div>
-    <table class="tbl"><thead><tr><th>Name</th><th>Role</th><th>Email</th></tr></thead><tbody>
-      <tr><td>Michael Johnson (HTRI)</td><td>Grant owner POC</td><td class="mn">johnson.michael&#64;utexas.edu</td></tr>
-      <tr><td>Leta Moser (HTRI)</td><td>Grant lead</td><td class="mn">leta.moser&#64;utexas.edu</td></tr>
-      <tr><td>Miguel Scott (ISO)</td><td>Security eval</td><td class="mn">miguel.scott&#64;utexas.edu</td></tr>
-      <tr><td>Tommy Castilleja (IT)</td><td>IT tickets</td><td class="mn">tommy.castilleja&#64;utexas.edu</td></tr>
-      <tr><td>Eleanor Price</td><td>Finance admin</td><td class="mn">via HTRI / Psychiatry</td></tr>
-      <tr><td>Elise Covas (Austin DBT)</td><td>Recruitment site</td><td class="mn">elise.covas&#64;uhsinc.com</td></tr>
-      <tr><td>Team phone (iPlum)</td><td>Participant line</td><td class="mn">512-523-5284</td></tr>
-      <tr><td>Team email</td><td>Shared inbox</td><td class="mn">wave-project&#64;austin.utexas.edu</td></tr>
-    </tbody></table>
-  </div>
 </div>
-
-<div id="panel-tasks" class="pnl">
-  <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-tasks" placeholder="Free notes..."></textarea></div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#9989;</div>Active Tasks</div>
-    <div id="task-list"></div>
-    <div class="brow"><button class="btn bt bs" id="btn-addTask">+ Add Task</button></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#10004;</div>Completed (pre-trial)</div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px">
-      <span class="b bd">ISO exception</span><span class="b bd">IRB modification</span><span class="b bd">Legal approval</span>
-      <span class="b bd">IT intake</span><span class="b bd">HTRI check-in</span><span class="b bd">Team email</span>
-      <span class="b bd">Developer account</span><span class="b bd">REDCap</span><span class="b bd">Consent forms</span>
-      <span class="b bd">Andrew Tang added</span><span class="b bd">Ascension IRB</span><span class="b bd">ClinicalTrials.gov</span>
-    </div>
-  </div>
+<div id="panel-participants" class="pnl ">
+<div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-participants" placeholder="Free notes..."></textarea></div>
+<div class="card">
+  <div class="ctitle" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:8px"><div class="cicon">&#128161;</div>Legend</div><button class="btn bo bs" id="btn-csv">Export CSV</button></div>
+  <div style="display:flex;flex-wrap:wrap;gap:9px;font-size:.73rem;font-weight:600"><span>&#128994; &ge;3 days/wk</span><span>&#128993; &lt;3 days/wk</span><span>&#128308; No use</span><span>&#11036; Pending</span><span>&#9989; Done</span><span>&#10060; Dropped</span></div><div style="margin-top:8px;font-size:.72rem;color:var(--mid)"><strong>Retained</strong> = used WAVE at least once per week, no two consecutive red weeks.</div>
 </div>
-
-<div id="panel-grant" class="pnl">
-  <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-grant" placeholder="Free notes..."></textarea></div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#127942;</div>AFSP Pilot Innovation Grant</div>
-    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px"><span class="b bp">Deadline: Nov 15, 2026</span><span class="b ba">Budget: &le;$50K / 2yr</span><span class="b bn">2026 Call: Not posted yet</span></div>
-    <div class="pw"><div class="pl"><span>Grant preparation progress</span><span>~55%</span></div><div class="pb"><div class="pf" style="width:55%"></div></div></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#127919;</div>Specific Aims <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click cells to edit)</span></div>
-    <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Aim</th><th>Focus</th><th>Status</th></tr></thead><tbody id="aims-body"></tbody></table></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128218;</div>Literature Review <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click cells to edit)</span></div>
-    <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Paper</th><th>Key data</th><th>Status</th><th></th></tr></thead><tbody id="lit-body"></tbody></table></div>
-    <div class="brow"><button class="btn bt bs" id="btn-addLit">+ Add Paper</button></div>
-  </div>
-  <!--SSR deleted-->
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128221;</div>Grant Milestones <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click to edit)</span></div>
-    <div id="milestones-list"></div>
-    <div class="brow"><button class="btn bt bs" id="btn-addMS">+ Add Milestone</button></div>
-  </div>
+<div style="padding:4px 2px 6px"><button class="btn bt bs" id="btn-addP">+ Add Participant</button></div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128100;</div>Participant Tracker</div>
+  <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>WAVE ID</th><th style="text-align:center">Pre</th><th style="text-align:center">W1</th><th style="text-align:center">W2</th><th style="text-align:center">W3</th><th style="text-align:center">W4</th><th style="text-align:center">Post</th><th>Status</th><th></th></tr></thead><tbody id="ptbl"></tbody></table></div>
 </div>
-
-<div id="panel-meetings" class="pnl">
-  <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-meetings" placeholder="Free notes..."></textarea></div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128221;</div>Meeting Notes</div>
-    <div id="mtg-list"></div>
-    <div class="brow"><button class="btn bt bs" id="btn-addMtg">+ New Meeting</button></div>
-  </div>
-  <div class="card">
-    <div class="ctitle"><div class="cicon">&#128204;</div>Standing Agenda</div>
-    <ul style="padding-left:18px;font-size:.77rem;color:var(--mid);line-height:2.1">
-      <li>Participant recruitment update</li><li>Participant progress review (weekly usage, flags)</li>
-      <li>Task assignments &amp; deadlines</li><li>IRB / regulatory updates</li>
-      <li>Grant planning (AFSP timeline, lit review)</li><li>App / technical issues</li><li>Budget review</li>
-    </ul>
-  </div>
+<div class="card">
+  <div class="ctitle" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:8px"><div class="cicon">&#127873;</div>Gift Cards</div><span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(tap cell to cycle)</span></div>
+  <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>WAVE ID</th><th style="text-align:center">W1 ($10)</th><th style="text-align:center">W2 ($15)</th><th style="text-align:center">W4 ($25)</th><th style="text-align:center">Post ($40)</th></tr></thead><tbody id="gctbl"></tbody></table></div>
 </div>
+</div>
+<div id="panel-recruitment" class="pnl ">
+<div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-recruitment" placeholder="Free notes..."></textarea></div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128205;</div>Recruitment Sites <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click cells to edit)</span></div>
+  <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Site</th><th>Owner</th><th>Last Contact</th><th>Status</th><th>Notes</th><th></th></tr></thead><tbody id="rec-body"></tbody></table></div><div class="brow"><button class="btn bt bs" id="btn-addRec">+ Add Site</button></div>
+</div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128236;</div>Screening Workflow</div>
+  <ol style="padding-left:18px;font-size:.77rem;color:var(--mid);line-height:2.1"><li>Jay checks REDCap for new screener submissions</li><li>Complete auto-screener (confirm uploaded screenshot)</li><li>Call or email invitation to schedule intake</li><li>YJ sends Teams calendar invite via Outlook template</li><li>Intake (~60 min): consent, C-SSRS, DERS-SF, app onboarding</li><li>Amos monitors weekly app usage; records in Participants tab</li><li>Adriana sends gift cards after qualifying weeks via Giftogram</li></ol>
+</div>
+</div>
+<div id="panel-team" class="pnl ">
+<div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-team" placeholder="Free notes..."></textarea></div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128101;</div>Core Team</div>
+  <div class="tg"><div class="tc"><div class="tn">YJ (Yoon Jae Cho)</div><div class="tr">Co-Investigator / PI</div><div class="tav">Wed-Thu 6-8pm, Sun 7-8pm</div></div><div class="tc"><div class="tn">Young Shin Kim</div><div class="tr">Mentor / Supervising PI</div><div class="tav">-</div></div><div class="tc"><div class="tn">Adriana Desalos</div><div class="tr">Research Coordinator</div><div class="tav">Mon/Wed 5-6pm</div></div><div class="tc"><div class="tn">Amos</div><div class="tr">App usage monitoring</div><div class="tav">Mon/Sat 7-8pm</div></div><div class="tc"><div class="tn">Jay</div><div class="tr">Screening lead</div><div class="tav">Sun 7-8pm</div></div><div class="tc"><div class="tn">Andrew Tang</div><div class="tr">Coordination, consent</div><div class="tav">Mon/Thu 6pm</div></div><div class="tc"><div class="tn">Josh</div><div class="tr">Interview support</div><div class="tav">Mon 6pm, Wed 4-5pm</div></div><div class="tc"><div class="tn">Nermin</div><div class="tr">Interview support</div><div class="tav">Mon/Thu 4-7pm</div></div></div>
+</div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128197;</div>Availability Grid <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click cells to edit)</span></div>
+  <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Time</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th></th></tr></thead><tbody id="avail-body"></tbody></table></div><div class="brow"><button class="btn bt bs" id="btn-addAvail">+ Add Row</button></div>
+</div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128279;</div>Key Contacts</div>
+  <table class="tbl"><thead><tr><th>Name</th><th>Role</th><th>Email</th></tr></thead><tbody><tr><td>Michael Johnson (HTRI)</td><td>Grant owner POC</td><td class="mn">johnson.michael&#64;utexas.edu</td></tr><tr><td>Leta Moser (HTRI)</td><td>Grant lead</td><td class="mn">leta.moser&#64;utexas.edu</td></tr><tr><td>Miguel Scott (ISO)</td><td>Security eval</td><td class="mn">miguel.scott&#64;utexas.edu</td></tr><tr><td>Tommy Castilleja (IT)</td><td>IT tickets</td><td class="mn">tommy.castilleja&#64;utexas.edu</td></tr><tr><td>Eleanor Price</td><td>Finance admin</td><td class="mn">via HTRI / Psychiatry</td></tr><tr><td>Elise Covas (Austin DBT)</td><td>Recruitment site</td><td class="mn">elise.covas&#64;uhsinc.com</td></tr><tr><td>Team phone (iPlum)</td><td>Participant line</td><td class="mn">512-523-5284</td></tr><tr><td>Team email</td><td>Shared inbox</td><td class="mn">wave-project&#64;austin.utexas.edu</td></tr></tbody></table>
+</div>
+</div>
+<div id="panel-tasks" class="pnl ">
+<div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-tasks" placeholder="Free notes..."></textarea></div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#9989;</div>Active Tasks</div>
+  <div id="task-list"></div><div class="brow"><button class="btn bt bs" id="btn-addTask">+ Add Task</button></div>
+</div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#10004;</div>Completed (pre-trial)</div>
+  <div style="display:flex;flex-wrap:wrap;gap:5px"><span class="b bd">ISO exception</span><span class="b bd">IRB modification</span><span class="b bd">Legal approval</span><span class="b bd">IT intake</span><span class="b bd">HTRI check-in</span><span class="b bd">Team email</span><span class="b bd">Developer account</span><span class="b bd">REDCap</span><span class="b bd">Consent forms</span><span class="b bd">Andrew Tang added</span><span class="b bd">Ascension IRB</span><span class="b bd">ClinicalTrials.gov</span></div>
+</div>
+</div>
+<div id="panel-grant" class="pnl ">
+<div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-grant" placeholder="Free notes..."></textarea></div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#127942;</div>AFSP Pilot Innovation Grant</div>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px"><span class="b bp">Deadline: Nov 15, 2026</span><span class="b ba">Budget: &le;$50K / 2yr</span><span class="b bn">2026 Call: Not posted yet</span></div><div class="pw"><div class="pl"><span>Grant preparation progress</span><span>~55%</span></div><div class="pb"><div class="pf" style="width:55%"></div></div></div>
+</div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#127919;</div>Specific Aims <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click cells to edit)</span></div>
+  <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Aim</th><th>Focus</th><th>Status</th></tr></thead><tbody id="aims-body"></tbody></table></div>
+</div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128218;</div>Literature Review <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click cells to edit)</span></div>
+  <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Paper</th><th>Key data</th><th>Status</th><th></th></tr></thead><tbody id="lit-body"></tbody></table></div><div class="brow"><button class="btn bt bs" id="btn-addLit">+ Add Paper</button></div>
+</div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128221;</div>Grant Milestones <span style="font-size:.63rem;color:var(--g4);font-weight:600;margin-left:4px">(click to edit)</span></div>
+  <div id="milestones-list"></div><div class="brow"><button class="btn bt bs" id="btn-addMS">+ Add Milestone</button></div>
+</div>
+</div>
+<div id="panel-meetings" class="pnl ">
+<div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-meetings" placeholder="Free notes..."></textarea></div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128221;</div>Meeting Notes</div>
+  <div id="mtg-list"></div><div class="brow"><button class="btn bt bs" id="btn-addMtg">+ New Meeting</button></div>
+</div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128204;</div>Standing Agenda</div>
+  <ul style="padding-left:18px;font-size:.77rem;color:var(--mid);line-height:2.1"><li>Participant recruitment update</li><li>Participant progress review (weekly usage, flags)</li><li>Task assignments &amp; deadlines</li><li>IRB / regulatory updates</li><li>Grant planning (AFSP timeline, lit review)</li><li>App / technical issues</li><li>Budget review</li></ul>
+</div>
+</div>
+<div id="panel-workflows" class="pnl ">
+<div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-workflows" placeholder="Free notes..."></textarea></div>
+<div class="card">
+  <div class="ctitle"><div class="cicon">&#128203;</div>Quick Reference</div>
+  <table class="tbl"><thead><tr><th>Task</th><th>Owner</th></tr></thead><tbody><tr><td>Screen participants, send initial invite</td><td><span class="b ba">Jay</span></td></tr><tr><td>Send invites to interviewers &amp; participants</td><td><span class="b ba">YJ</span></td></tr><tr><td>General communication with participants</td><td><span class="b ba">Adriana, Andrew</span></td></tr><tr><td>Purchase gift cards</td><td><span class="b ba">Adriana</span></td></tr><tr><td>Monitor weekly app usage &amp; send gift cards</td><td><span class="b ba">Amos</span></td></tr></tbody></table>
+</div>
+<div class="wfs"><div class="wfh" data-wf="wf1">Contact &amp; Communication Setup <span>&#9660;</span></div><div class="wfb" id="wf1"><div class="wnote">Team number: <strong>512-523-5284</strong> (iPlum). Students register via invite from YJ.</div><strong>Incoming calls (9am-9pm):</strong><ul><li>Press 9 &rarr; Adriana &rarr; Andrew &rarr; voicemail</li><li>Non-business hours &rarr; voicemail</li><li>Save 512-523-5284 so you answer it</li></ul><strong>Texts/voicemails:</strong><ul><li>Participants can text us, we cannot text back</li><li>All copied to wave-project&#64;austin.utexas.edu</li><li>Respond within 24h</li></ul><strong>Adding shared inbox (Outlook):</strong><ol><li>Settings &rarr; Accounts &rarr; [+] &rarr; Open Shared Mailbox</li><li>Search "WAVE Team" or wave-project&#64;austin.utexas.edu</li></ol><strong>Email templates:</strong><ol><li>Download from Teams: MAIN &gt; QUICK ACCESS &gt; Email template files</li><li>In Outlook: Mail from Template &rarr; select template</li></ol></div></div>
+<div class="wfs"><div class="wfh" data-wf="wf2">Screening Participants (JAY) <span>&#9660;</span></div><div class="wfb" id="wf2"><span class="own">Owner: Jay</span><ol><li>REDCap &rarr; new records where Participant Screener is green AND Auto Screener is empty</li><li>Complete auto-screener by confirming uploaded screenshot</li><li>Call or email invitation to schedule</li></ol></div></div>
+<div class="wfs"><div class="wfh" data-wf="wf3">Sending Invites for Intakes / Follow-ups (YJ) <span>&#9660;</span></div><div class="wfb" id="wf3"><span class="own">Owner: YJ</span><ol><strong>Step 1 - Find interviewer:</strong><li>Participants book via Google Calendar. Login: wave.utaustin / wavepilot2025</li><li>Check WAVE team doc for assigned interviewer &amp; supervisor</li></ol><strong>Step 2 - Send invite (Outlook, wave-project account):</strong><ol><li>New Event &rarr; "[Name] Intake" or "[Name] Follow-up" &rarr; invite interviewer + participant &rarr; Teams meeting &rarr; paste template &rarr; Send</li></ol><div class="sh">Intake email template</div><div class="tmpl">Welcome!
 
-<div id="panel-workflows" class="pnl">
-  <div class="memo-wrap"><div class="memo-lbl">Memo</div><textarea class="memo" id="memo-workflows" placeholder="Free notes..."></textarea></div>
-  <div class="card" style="margin-bottom:12px">
-    <div class="ctitle"><div class="cicon">&#128203;</div>Quick Reference</div>
-    <table class="tbl"><thead><tr><th>Task</th><th>Owner</th></tr></thead><tbody>
-      <tr><td>Screen participants, send initial invite</td><td><span class="b ba">Jay</span></td></tr>
-      <tr><td>Send invites to interviewers &amp; participants</td><td><span class="b ba">YJ</span></td></tr>
-      <tr><td>General communication with participants</td><td><span class="b ba">Adriana, Andrew</span></td></tr>
-      <tr><td>Purchase gift cards</td><td><span class="b ba">Adriana</span></td></tr>
-      <tr><td>Monitor weekly app usage &amp; send gift cards</td><td><span class="b ba">Amos</span></td></tr>
-    </tbody></table>
-  </div>
-  <div class="wfs"><div class="wfh" data-wf="wf1">Contact &amp; Communication Setup <span>&#9660;</span></div><div class="wfb" id="wf1">
-    <div class="wnote">Team number: <strong>512-523-5284</strong> (iPlum). Students register via invite from YJ.</div>
-    <strong>Incoming calls (9am-9pm):</strong><ul><li>Press 9 &rarr; Adriana &rarr; Andrew &rarr; voicemail</li><li>Non-business hours &rarr; voicemail</li><li>Save 512-523-5284 so you answer it</li></ul>
-    <strong>Texts/voicemails:</strong><ul><li>Participants can text us, we cannot text back</li><li>All copied to wave-project&#64;austin.utexas.edu</li><li>Respond within 24h</li></ul>
-    <strong>Adding shared inbox (Outlook):</strong><ol><li>Settings &rarr; Accounts &rarr; [+] &rarr; Open Shared Mailbox</li><li>Search "WAVE Team" or wave-project&#64;austin.utexas.edu</li><li>If not found, email YJ to add you to directory</li></ol>
-    <strong>Email templates:</strong><ol><li>Download from Teams: MAIN &gt; QUICK ACCESS &gt; Email template files</li><li>In Outlook: Mail from Template &rarr; select template</li></ol>
-  </div></div>
-  <div class="wfs"><div class="wfh" data-wf="wf2">Screening Participants (JAY) <span>&#9660;</span></div><div class="wfb" id="wf2">
-    <span class="own">Owner: Jay</span>
-    <ol><li>REDCap &rarr; new records where Participant Screener is green AND Auto Screener is empty</li><li>Complete auto-screener by confirming uploaded screenshot</li><li>Call or email invitation to schedule</li></ol>
-  </div></div>
-  <div class="wfs"><div class="wfh" data-wf="wf3">Sending Invites for Intakes / Follow-ups (YJ) <span>&#9660;</span></div><div class="wfb" id="wf3">
-    <span class="own">Owner: YJ</span>
-    <strong>Step 1 - Find interviewer:</strong><ol><li>Participants book via Google Calendar. Login: wave.utaustin / wavepilot2025</li><li>Check WAVE team doc for assigned interviewer &amp; supervisor</li></ol>
-    <strong>Step 2 - Send invite (Outlook, wave-project account):</strong><ol><li>New Event &rarr; "[Name] Intake" or "[Name] Follow-up" &rarr; invite interviewer + participant &rarr; Teams meeting &rarr; paste template &rarr; Send</li></ol>
-    <div class="sh">Intake email template</div>
-    <div class="tmpl">Welcome!
+Thank you again for your interest in our study.
 
-Thank you again for your interest in our study. Your participation is highly valuable to us and the development of mental health care.
-
-Please meet us for an online Teams intake (~60 min) to sign your consent form, complete the pre-study interview, and get on board WAVE.
+Please meet us for an online Teams intake (~60 min) to sign consent, complete the pre-study interview, and get on board WAVE.
 
 Your interviewers will be: ***, ***
 
-If you wish to reschedule, please contact 24 hours prior at:
+If you wish to reschedule, please contact 24 hours prior:
     Phone: ***
     Email: Respond to this invite
 
 Take care, ***
-WAVE Study Team</div>
-    <div class="sh">Post-study follow-up template</div>
-    <div class="tmpl">Hello!
+WAVE Study Team</div><div class="sh">Post-study follow-up template</div><div class="tmpl">Hello!
 
-Thank you so much for your participation in our study.
+Thank you so much for your participation.
 
 Please meet us for an online Teams post-study meeting (~60 min) to complete the post-study interview. You will receive $30 for this meeting.
 
 Your interviewers will be: ***, ***
 
-If you wish to reschedule, please contact 24 hours prior at:
+If you wish to reschedule, please contact 24 hours prior:
     Phone: ***
     Email: Respond to this invite
 
 Take care, ***
-WAVE Study Team</div>
-  </div></div>
-  <div class="wfs"><div class="wfh" data-wf="wf4">Update Contacts (YJ) <span>&#9660;</span></div><div class="wfb" id="wf4">
-    <span class="own">Owner: YJ</span>
-    <ol><li>Add to iPlum group "WAVE participants" - fill all five fields</li><li>Save to Outlook contacts: double-click email &rarr; Add to Contacts &rarr; First/Last name, Nickname = WAVE ID, Phone from REDCap</li><li>For minors: also add caregiver contact info</li></ol>
-  </div></div>
-  <div class="wfs"><div class="wfh" data-wf="wf5">General Communication (ADRIANA &amp; ANDREW) <span>&#9660;</span></div><div class="wfb" id="wf5">
-    <span class="own">Owner: Adriana, Andrew</span>
-    <ol><li>Participant text &rarr; forwarded to wave-project&#64;austin.utexas.edu &rarr; respond within 24h</li><li>Participant call (9am-9pm) &rarr; Adriana &rarr; Andrew &rarr; voicemail</li><li>Participant email &rarr; reply via wave-project&#64;austin.utexas.edu</li></ol>
-    <ul><li>Monitor wave-project inbox regularly</li><li>Email-first; phone only when urgent</li></ul>
-  </div></div>
-  <div class="wfs"><div class="wfh" data-wf="wf6">Purchasing Gift Cards (ADRIANA) <span>&#9660;</span></div><div class="wfb" id="wf6">
-    <span class="own">Owner: Adriana</span>
-    <div class="wnote">Account: adriana.desalos&#64;gmail.com &middot; Account number: 20-5601-1426</div>
-    <ol><li>Fill Smartsheet form &rarr; order ($10x3 + $15x4) x20 = ~$1,600 total from mastercardgiftcard.com</li><li>They send procard info</li><li>Purchase cards, send to wave-project&#64;austin.utexas.edu</li><li>Move emails to Outlook Inbox &rarr; GIFT CARDS folder</li><li>Email confirmation to Eleanor Price (cc YJ)</li></ol>
-  </div></div>
-  <div class="wfs"><div class="wfh" data-wf="wf7">Monitoring App Usage &amp; Sending Gift Cards (AMOS) <span>&#9660;</span></div><div class="wfb" id="wf7">
-    <span class="own">Owner: Amos</span>
-    <div class="wnote">Login: amostanoyo&#64;gmail.com</div>
-    <ol><li>Check app backend for weekly usage (method TBA)</li><li>Update Participants tab in this dashboard</li><li>Forward gift cards from GIFT CARDS folder via wave-project&#64;austin.utexas.edu</li></ol>
-    <strong>Gift card schedule:</strong>
-    <div class="grow"><span style="min-width:130px;font-weight:700">Week 1</span><span>$10</span></div>
-    <div class="grow"><span style="min-width:130px;font-weight:700">Week 2</span><span>$15</span></div>
-    <div class="grow"><span style="min-width:130px;font-weight:700">Week 4</span><span>$25 ($10 + $15)</span></div>
-    <div class="grow"><span style="min-width:130px;font-weight:700">Post-study meeting</span><span>$40 ($10 + $15 x2)</span></div>
-    <div class="sh">Gift card email template</div>
-    <div class="tmpl">Thank you for completing [Week 1 / Week 2 / all weeks / your last meeting] of our study!
+WAVE Study Team</div></div></div>
+<div class="wfs"><div class="wfh" data-wf="wf4">Update Contacts (YJ) <span>&#9660;</span></div><div class="wfb" id="wf4"><span class="own">Owner: YJ</span><ol><li>Add to iPlum group "WAVE participants" - fill all five fields</li><li>Save to Outlook contacts: double-click email &rarr; Add to Contacts &rarr; First/Last name, Nickname = WAVE ID, Phone from REDCap</li><li>For minors: also add caregiver contact info</li></ol></div></div>
+<div class="wfs"><div class="wfh" data-wf="wf5">General Communication (ADRIANA &amp; ANDREW) <span>&#9660;</span></div><div class="wfb" id="wf5"><span class="own">Owner: Adriana, Andrew</span><ol><li>Participant text &rarr; forwarded to wave-project&#64;austin.utexas.edu &rarr; respond within 24h</li><li>Participant call (9am-9pm) &rarr; Adriana &rarr; Andrew &rarr; voicemail</li><li>Participant email &rarr; reply via wave-project&#64;austin.utexas.edu</li></ol><ul><li>Monitor wave-project inbox regularly</li><li>Email-first; phone only when urgent</li></ul></div></div>
+<div class="wfs"><div class="wfh" data-wf="wf6">Purchasing Gift Cards (ADRIANA) <span>&#9660;</span></div><div class="wfb" id="wf6"><span class="own">Owner: Adriana</span><div class="wnote">Account: adriana.desalos&#64;gmail.com &middot; Account number: 20-5601-1426</div><ol><li>Fill Smartsheet form &rarr; order ($10x3 + $15x4) x20 = ~$1,600 total from mastercardgiftcard.com</li><li>They send procard info</li><li>Purchase cards, send to wave-project&#64;austin.utexas.edu</li><li>Move emails to Outlook Inbox &rarr; GIFT CARDS folder</li><li>Email confirmation to Eleanor Price (cc YJ)</li></ol></div></div>
+<div class="wfs"><div class="wfh" data-wf="wf7">Monitoring App Usage &amp; Sending Gift Cards (AMOS) <span>&#9660;</span></div><div class="wfb" id="wf7"><span class="own">Owner: Amos</span><div class="wnote">Login: amostanoyo&#64;gmail.com</div><ol><li>Check app backend for weekly usage (method TBA)</li><li>Update Participants tab in this dashboard</li><li>Forward gift cards from GIFT CARDS folder via wave-project&#64;austin.utexas.edu</li></ol><strong>Gift card schedule:</strong><div class="grow"><span style="min-width:130px;font-weight:700">Week 1</span><span>$10</span></div><div class="grow"><span style="min-width:130px;font-weight:700">Week 2</span><span>$15</span></div><div class="grow"><span style="min-width:130px;font-weight:700">Week 4</span><span>$25 ($10+$15)</span></div><div class="grow"><span style="min-width:130px;font-weight:700">Post-study meeting</span><span>$40 ($10+$15x2)</span></div><div class="sh">Gift card email template</div><div class="tmpl">Thank you for completing [Week 1/2/all weeks/last meeting] of our study!
 
-Your $*** reward will be sent shortly. If your reward is greater than $15, you may receive it across multiple emails.
+Your $*** reward will be sent shortly.
 
 Take care, ***
-WAVE Study Team</div>
-  </div></div>
-  <div class="wfs"><div class="wfh" data-wf="wf8">Finances &amp; Budget <span>&#9660;</span></div><div class="wfb" id="wf8">
-    <div class="wnote">Account: 20-5601-1426 &middot; HTRI funds remaining (as of 12/17/2025): $5,740.43</div>
-    <strong>To purchase:</strong><ol><li>Psychiatry Dept dashboard &rarr; get quote &rarr; submit purchase order</li></ol>
-    <strong>Participant incentives:</strong><ol><li>Cerebrum page &rarr; Participant Incentives &rarr; Tango account &rarr; quote &rarr; PO</li><li>Order gift cards in batches as enrollment grows</li></ol>
-  </div></div>
-</div>
-
-
+WAVE Study Team</div></div></div>
+<div class="wfs"><div class="wfh" data-wf="wf8">Finances &amp; Budget <span>&#9660;</span></div><div class="wfb" id="wf8"><div class="wnote">HTRI Pilot Award &middot; Account#: 20-5601-1426</div><strong>To purchase:</strong><ol><li>Psychiatry Dept dashboard &rarr; get quote &rarr; submit purchase order</li></ol><strong>Participant incentives:</strong><ol><li>Cerebrum page &rarr; Participant Incentives &rarr; Tango account &rarr; quote &rarr; PO</li><li>Order gift cards in batches as enrollment grows</li></ol></div></div>
 <button id="fab">&#128279; Share</button>
 
 <div class="ov" id="ov-p"><div class="mo">
@@ -455,21 +341,19 @@ WAVE Study Team</div>
   <label>WAVE ID</label><input type="text" id="m-pid" placeholder="e.g. abc123de">
   <label>Status</label><select id="m-st"><option value="active">Active</option><option value="dropped">Dropped</option><option value="completed">Completed</option></select>
   <label>Pre-study meeting</label><select id="m-pre"><option value="_">Pending</option><option value="done">Done</option></select>
-  <label>Week 1</label><select id="m-w1"><option value="_">Pending</option><option value="good">&#128994; 3+ days</option><option value="low">&#128993; less than 3 days</option><option value="none">&#128308; No use</option></select>
-  <label>Week 2</label><select id="m-w2"><option value="_">Pending</option><option value="good">&#128994; 3+ days</option><option value="low">&#128993; less than 3 days</option><option value="none">&#128308; No use</option></select>
-  <label>Week 3</label><select id="m-w3"><option value="_">Pending</option><option value="good">&#128994; 3+ days</option><option value="low">&#128993; less than 3 days</option><option value="none">&#128308; No use</option></select>
-  <label>Week 4</label><select id="m-w4"><option value="_">Pending</option><option value="good">&#128994; 3+ days</option><option value="low">&#128993; less than 3 days</option><option value="none">&#128308; No use</option></select>
+  <label>Week 1</label><select id="m-w1"><option value="_">Pending</option><option value="good">&#128994; 3+ days</option><option value="low">&#128993; &lt;3 days</option><option value="none">&#128308; No use</option></select>
+  <label>Week 2</label><select id="m-w2"><option value="_">Pending</option><option value="good">&#128994; 3+ days</option><option value="low">&#128993; &lt;3 days</option><option value="none">&#128308; No use</option></select>
+  <label>Week 3</label><select id="m-w3"><option value="_">Pending</option><option value="good">&#128994; 3+ days</option><option value="low">&#128993; &lt;3 days</option><option value="none">&#128308; No use</option></select>
+  <label>Week 4</label><select id="m-w4"><option value="_">Pending</option><option value="good">&#128994; 3+ days</option><option value="low">&#128993; &lt;3 days</option><option value="none">&#128308; No use</option></select>
   <label>Post-study meeting</label><select id="m-post"><option value="_">Pending</option><option value="sent">&#128140; Sent invite</option><option value="scheduled">&#9200; Scheduled</option><option value="done">Done</option><option value="n/a">N/A</option></select>
   <div class="mo-btns"><button class="btn bo bs" id="btn-cancelP">Cancel</button><button class="btn bt bs" id="btn-saveP">Save</button></div>
 </div></div>
-
 <div class="ov" id="ov-t"><div class="mo">
   <h3>Add Task</h3>
   <label>Description</label><input type="text" id="m-ttxt" placeholder="Task description...">
   <label>Assigned to</label><input type="text" id="m-town" placeholder="Name or team">
   <div class="mo-btns"><button class="btn bo bs" id="btn-cancelT">Cancel</button><button class="btn bt bs" id="btn-saveT">Add Task</button></div>
 </div></div>
-
 <div class="ov" id="ov-f"><div class="mo">
   <h3>Add Flag</h3>
   <label>Type</label><select id="m-ftype"><option value="al-a">Warning (amber)</option><option value="al-t">Info (teal)</option><option value="al-r">Urgent (red)</option><option value="al-g">Resolved (green)</option></select>
@@ -477,18 +361,25 @@ WAVE Study Team</div>
   <div class="mo-btns"><button class="btn bo bs" id="btn-cancelF">Cancel</button><button class="btn bt bs" id="btn-saveF">Add Flag</button></div>
 </div></div>
 
+
 <script>
+
 (function() {
-  var SK = 'wave_v7';
+  var BIN_ID  = '69bdfce3c3097a1dd544ed1a';
+  var API_KEY = '$2a$10$dZ4aEXmHzGiChGmaHPQ69eKZLf1dRnjyCOFPU.SzyLtb.mKky1NMS';
+  var BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+  var SK = 'wave_v8_cache';
+
   var WI = {good:'🟢',low:'🟡',none:'🔴',done:'\u2705',_:'\u2B1C','n/a':'\u2014',sent:'📬',scheduled:'\u23F0'};
   var GC = {'_':'\u2B1C','ineligible':'\u2014','need':'💳','sent':'\u2705'};
   var GC_OPTS = [['_','Pending'],['ineligible','Ineligible'],['need','Need to send'],['sent','Sent']];
+
   var DD = {
     participants:[
-      {id:'111111',  pre:'done',w1:'none',w2:'_',  w3:'_',w4:'_',post:'n/a',status:'dropped',gc_w1:'ineligible',gc_w2:'ineligible',gc_w4:'ineligible',gc_post:'ineligible'},
-      {id:'99b76cf8',pre:'done',w1:'low', w2:'_',  w3:'_',w4:'_',post:'_',  status:'active', gc_w1:'_',gc_w2:'_',gc_w4:'_',gc_post:'_'},
-      {id:'b07e9c7c',pre:'done',w1:'none',w2:'_',  w3:'_',w4:'_',post:'_',  status:'active', gc_w1:'_',gc_w2:'_',gc_w4:'_',gc_post:'_'},
-      {id:'6983c12a',pre:'done',w1:'none',w2:'low',w3:'_',w4:'_',post:'_',  status:'active', gc_w1:'_',gc_w2:'_',gc_w4:'_',gc_post:'_'}
+      {id:'111111',  pre:'done',w1:'none',w2:'_',  w3:'_',w4:'_',post:'n/a',status:'dropped', gc_w1:'ineligible',gc_w2:'ineligible',gc_w4:'ineligible',gc_post:'ineligible'},
+      {id:'99b76cf8',pre:'done',w1:'low', w2:'_',  w3:'_',w4:'_',post:'_',  status:'active',  gc_w1:'_',gc_w2:'_',gc_w4:'_',gc_post:'_'},
+      {id:'b07e9c7c',pre:'done',w1:'none',w2:'_',  w3:'_',w4:'_',post:'_',  status:'active',  gc_w1:'_',gc_w2:'_',gc_w4:'_',gc_post:'_'},
+      {id:'6983c12a',pre:'done',w1:'none',w2:'low',w3:'_',w4:'_',post:'_',  status:'active',  gc_w1:'_',gc_w2:'_',gc_w4:'_',gc_post:'_'}
     ],
     tasks:[
       {text:'App & dashboard internal review',owner:'WAVE team',done:false},
@@ -508,15 +399,15 @@ WAVE Study Team</div>
       {type:'al-r',text:'App review: Internal review not started. Schedule before next enrollment wave.'}
     ],
     recruitment:[
-      {site:'Austin DBT Associates',       owner:'Adriana',last:'10/20/2025',status:'recruiting',  note:'Actively recruiting!'},
-      {site:'UT Austin - Patient Res Opps', owner:'Amos',  last:'10/10/2025',status:'recruiting',  note:''},
-      {site:'Community DBT (flyer/IG)',     owner:'All',   last:'Ongoing',   status:'recruiting',  note:'Flyers, email, Instagram'},
-      {site:'Austin Oaks Hospital',         owner:'Amos',  last:'10/13/2025',status:'in-progress', note:'In communication'},
-      {site:'DCMC / Texas Child Study Ctr', owner:'YJ',   last:'01/2026',   status:'in-progress', note:'IRB modification in progress'},
-      {site:'UT Austin - Healthyminds',     owner:'Jay',  last:'10/29/2025',status:'no',           note:'Director unresponsive'},
-      {site:'Amplify Center',               owner:'Adriana',last:'10/20/2025',status:'no',         note:''},
-      {site:'UT Austin - @our_utaustin',    owner:'Jay',  last:'11/02/2025',status:'no',           note:'Never responded'},
-      {site:'Paradigm',                     owner:'Adriana',last:'Nov 2025', status:'paused',      note:'Inbox full - retry'}
+      {site:'Austin DBT Associates',        owner:'Adriana',last:'10/20/2025',status:'recruiting',  note:'Actively recruiting!'},
+      {site:'UT Austin - Patient Res Opps', owner:'Amos',   last:'10/10/2025',status:'recruiting',  note:''},
+      {site:'Community DBT (flyer/IG)',      owner:'All',    last:'Ongoing',   status:'recruiting',  note:'Flyers, email, Instagram'},
+      {site:'Austin Oaks Hospital',          owner:'Amos',   last:'10/13/2025',status:'in-progress', note:'In communication'},
+      {site:'DCMC / Texas Child Study Ctr',  owner:'YJ',     last:'01/2026',   status:'in-progress', note:'IRB modification in progress'},
+      {site:'UT Austin - Healthyminds',      owner:'Jay',    last:'10/29/2025',status:'no',           note:'Director unresponsive'},
+      {site:'Amplify Center',                owner:'Adriana',last:'10/20/2025',status:'no',           note:''},
+      {site:'UT Austin - @our_utaustin',     owner:'Jay',    last:'11/02/2025',status:'no',           note:'Never responded'},
+      {site:'Paradigm',                      owner:'Adriana',last:'Nov 2025',  status:'paused',       note:'Inbox full - retry'}
     ],
     avail:[
       {time:'4 PM',sun:'',       mon:'',              tue:'',wed:'Josh',          thu:'Nermin',    fri:'',sat:''},
@@ -539,18 +430,6 @@ WAVE Study Team</div>
       {paper:'Ramzan 2025',  data:'Digital DBT adjunct',                       status:'Extracted'},
       {paper:'Linehan 2015', data:'Effect size for power justification',       status:'Pending'}
     ],
-    memos:{overview:'',participants:'',recruitment:'',team:'',tasks:'',grant:'',meetings:'',workflows:''},
-    lastUpdated:'',
-    htri:'$5,740',
-    htriTotal:16000,
-    timeline:[
-      {date:'Aug 2025',  text:'IRB approved (STUDY00007049) · Legal, ISO, IT clearance · HTRI check-in', fut:false},
-      {date:'Oct-Dec 2025', text:'Recruitment launched · Austin DBT, UT Patient Opps, Austin Oaks', fut:false},
-      {date:'Jan 2026',  text:'IRB modification approved · Andrew Tang added as personnel', fut:false},
-      {date:'Mar 2026',  text:'4 participants onboarded · Giftogram onboarding in progress', fut:false},
-      {date:'Apr-Jul 2026', text:'Complete Phase 1 (n=20) · Assess retention → Phase 2 if <10 retained', fut:true},
-      {date:'Nov 15, 2026', text:'AFSP Pilot Innovation Grant deadline ($50K / 2yr)', fut:true}
-    ],
     milestones:[
       {date:'Ongoing',      text:'STUDY00007049 data collection for pilot effect sizes'},
       {date:'Apr 2026',     text:'Extract Linehan 2015 effect size'},
@@ -558,67 +437,172 @@ WAVE Study Team</div>
       {date:'Jul 2026',     text:'Draft narrative complete; DSMB/ISM finalized'},
       {date:'Oct 2026',     text:'Internal review + lived experience consultation'},
       {date:'Nov 15, 2026', text:'AFSP submission deadline'}
-    ]
+    ],
+    timeline:[
+      {date:'Aug 2025',     text:'IRB approved (STUDY00007049) - Legal, ISO, IT clearance - HTRI check-in',fut:false},
+      {date:'Oct-Dec 2025', text:'Recruitment launched - Austin DBT, UT Patient Opps, Austin Oaks',fut:false},
+      {date:'Jan 2026',     text:'IRB modification approved - Andrew Tang added as personnel',fut:false},
+      {date:'Mar 2026',     text:'4 participants onboarded - Giftogram onboarding in progress',fut:false},
+      {date:'Apr-Jul 2026', text:'Complete Phase 1 (n=20) - Assess retention',fut:true},
+      {date:'Nov 15, 2026', text:'AFSP Pilot Innovation Grant deadline ($50K / 2yr)',fut:true}
+    ],
+    memos:{overview:'',participants:'',recruitment:'',team:'',tasks:'',grant:'',meetings:'',workflows:''},
+    htri:'$5,740',
+    htriTotal:16000,
+    lastUpdated:''
   };
 
-  function loadState() {
-    try {
-      var p = new URLSearchParams(window.location.search).get('data');
-      if (p) { var d = JSON.parse(decodeURIComponent(p)); localStorage.setItem(SK, JSON.stringify(d)); return d; }
-    } catch(e) {}
-    try { var s = localStorage.getItem(SK); if (s) return JSON.parse(s); } catch(e) {}
-    return JSON.parse(JSON.stringify(DD));
+  // ── JSONBIN SYNC ──────────────────────────────────────────────────────
+  var S = JSON.parse(JSON.stringify(DD));
+  var syncTimer = null;
+
+  function setSyncStatus(state, msg) {
+    var bar = document.getElementById('sync-bar');
+    if (!bar) return;
+    var dot = bar.querySelector('.dot');
+    var txt = bar.querySelector('.sync-txt');
+    if (dot) { dot.className = 'dot ' + (state==='ok'?'dot-ok':state==='busy'?'dot-busy':'dot-err'); }
+    if (txt) txt.textContent = msg;
   }
-  var S = loadState();
-  if (!S.memos)    S.memos    = JSON.parse(JSON.stringify(DD.memos));
-  if (!S.flags)    S.flags    = JSON.parse(JSON.stringify(DD.flags));
-  if (!S.aims)     S.aims     = JSON.parse(JSON.stringify(DD.aims));
-  if (!S.lit)      S.lit      = JSON.parse(JSON.stringify(DD.lit));
-  if (!S.avail)    S.avail    = JSON.parse(JSON.stringify(DD.avail));
-  if (!S.timeline) S.timeline = JSON.parse(JSON.stringify(DD.timeline));
-  if (!S.htri)       S.htri       = DD.htri;
-  if (!S.htriTotal)  S.htriTotal  = DD.htriTotal;
-  if (!S.milestones) S.milestones = JSON.parse(JSON.stringify(DD.milestones));
+
+  function loadFromBin(cb) {
+    setSyncStatus('busy', 'Loading...');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', BIN_URL + '/latest', true);
+    xhr.setRequestHeader('X-Master-Key', API_KEY);
+    xhr.setRequestHeader('X-Bin-Meta', 'false');
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          if (data && data.participants) {
+            S = data;
+            ensureFields();
+            try { localStorage.setItem(SK, xhr.responseText); } catch(e) {}
+            setSyncStatus('ok', 'Synced ' + new Date().toLocaleTimeString());
+          }
+        } catch(e) {}
+      } else {
+        setSyncStatus('err', 'Load failed (' + xhr.status + ')');
+      }
+      if (cb) cb();
+    };
+    xhr.onerror = function() {
+      setSyncStatus('err', 'Offline - using local cache');
+      // fall back to localStorage
+      try {
+        var cached = localStorage.getItem(SK);
+        if (cached) { var d = JSON.parse(cached); if (d && d.participants) { S = d; ensureFields(); } }
+      } catch(e) {}
+      if (cb) cb();
+    };
+    xhr.send();
+  }
+
+  function saveToBin() {
+    S.lastUpdated = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    dispUpdated();
+    try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {}
+    setSyncStatus('busy', 'Saving...');
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', BIN_URL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-Master-Key', API_KEY);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        setSyncStatus('ok', 'Saved ' + new Date().toLocaleTimeString());
+      } else {
+        setSyncStatus('err', 'Save failed (' + xhr.status + ')');
+      }
+    };
+    xhr.onerror = function() { setSyncStatus('err', 'Save failed - offline?'); };
+    xhr.send(JSON.stringify(S));
+  }
+
+  function save() {
+    // Debounce: wait 800ms after last change before pushing to bin
+    if (syncTimer) clearTimeout(syncTimer);
+    syncTimer = setTimeout(saveToBin, 800);
+    setSyncStatus('busy', 'Pending save...');
+    try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {}
+  }
+
+  function ensureFields() {
+    if (!S.memos)      S.memos      = JSON.parse(JSON.stringify(DD.memos));
+    if (!S.flags)      S.flags      = JSON.parse(JSON.stringify(DD.flags));
+    if (!S.aims)       S.aims       = JSON.parse(JSON.stringify(DD.aims));
+    if (!S.lit)        S.lit        = JSON.parse(JSON.stringify(DD.lit));
+    if (!S.avail)      S.avail      = JSON.parse(JSON.stringify(DD.avail));
+    if (!S.timeline)   S.timeline   = JSON.parse(JSON.stringify(DD.timeline));
+    if (!S.milestones) S.milestones = JSON.parse(JSON.stringify(DD.milestones));
+    if (!S.htri)       S.htri       = DD.htri;
+    if (!S.htriTotal)  S.htriTotal  = DD.htriTotal;
+    S.participants.forEach(function(p) {
+      if (!p.gc_w1)   p.gc_w1   = '_';
+      if (!p.gc_w2)   p.gc_w2   = '_';
+      if (!p.gc_w4)   p.gc_w4   = '_';
+      if (!p.gc_post) p.gc_post = '_';
+    });
+  }
 
   function dispUpdated() {
     var el = document.getElementById('disp-updated');
     if (el) el.textContent = 'Last updated: ' + (S.lastUpdated || '-');
   }
-  function save() {
-    S.lastUpdated = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    dispUpdated();
-    try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {}
+
+  // ── TABS ────────────────────────────────────────────────────────────
+  document.getElementById('tabBar').addEventListener('click', function(e) {
+    var b = e.target.closest('.tb');
+    if (!b) return;
+    document.querySelectorAll('.tb').forEach(function(x) { x.classList.remove('on'); });
+    document.querySelectorAll('.pnl').forEach(function(x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    document.getElementById('panel-' + b.dataset.tab).classList.add('on');
+  });
+
+  // ── MEMOS ────────────────────────────────────────────────────────────
+  ['overview','participants','recruitment','team','tasks','grant','meetings','workflows'].forEach(function(id) {
+    var el = document.getElementById('memo-' + id);
+    if (!el) return;
+    el.addEventListener('input', function() { S.memos[id] = this.value; save(); });
+  });
+
+  // ── INLINE CONFIRM ───────────────────────────────────────────────────
+  function inlineConfirm(el, msg, onYes, rerender) {
+    var parent = el.closest('tr') || el.closest('.tki') || el.closest('.al') || el.parentElement;
+    var isRow = parent.tagName === 'TR';
+    var strip = document.createElement(isRow ? 'tr' : 'div');
+    var inner = '<span>' + msg + '</span><button class="confirm-yes">Delete</button><button class="confirm-no">Cancel</button>';
+    if (isRow) {
+      strip.innerHTML = '<td colspan="' + parent.cells.length + '"><div class="confirm-strip" style="margin:2px 0">' + inner + '</div></td>';
+    } else {
+      strip.className = 'confirm-strip'; strip.innerHTML = inner;
+    }
+    parent.parentNode.insertBefore(strip, parent);
+    parent.style.display = 'none';
+    strip.querySelector('.confirm-yes').addEventListener('click', function() { onYes(); });
+    strip.querySelector('.confirm-no').addEventListener('click', function() { parent.style.display = ''; strip.remove(); if (rerender) rerender(); });
   }
 
-  // HTRI FUNDS
-  function parseHTRI(str) {
-    // Extract numeric value from strings like "$5,740" or "5740" or "$5.7k"
-    var n = parseFloat(str.replace(/[$,k]/gi, function(m) { return m.toLowerCase()==='k'?'000':''; }));
-    return isNaN(n) ? 0 : n;
-  }
+  // ── HTRI FUNDS ──────────────────────────────────────────────────────
   function updateHTRIBar() {
     var bar = document.getElementById('htri-bar');
     if (!bar) return;
-    var val = parseHTRI(S.htri);
-    var pct = Math.min(100, Math.round((val / S.htriTotal) * 100));
-    bar.style.width = pct + '%';
+    var n = parseFloat((S.htri||'').replace(/[$,]/g,''));
+    bar.style.width = (isNaN(n) ? 0 : Math.min(100, Math.round((n/S.htriTotal)*100))) + '%';
   }
-  (function initHTRI() {
+  function initHTRI() {
     var el = document.getElementById('htri-val');
     if (!el) return;
     el.textContent = S.htri;
     updateHTRIBar();
-    el.addEventListener('input', function() {
-      S.htri = this.textContent.trim();
-      updateHTRIBar();
-      save();
-    });
+    el.addEventListener('input', function() { S.htri = this.textContent.trim(); updateHTRIBar(); save(); });
     el.addEventListener('focus', function() { this.style.borderBottom = '1px solid var(--teal)'; });
     el.addEventListener('blur',  function() { this.style.borderBottom = '1px dashed var(--g4)'; });
-    el.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); this.blur(); } });
-  })();
+    el.addEventListener('keydown', function(e) { if (e.key==='Enter'){e.preventDefault();this.blur();} });
+  }
 
-  // TIMELINE
+  // ── TIMELINE ────────────────────────────────────────────────────────
   function renderTimeline() {
     var el = document.getElementById('timeline-list');
     if (!el) return;
@@ -626,136 +610,61 @@ WAVE Study Team</div>
     var wrap = document.createElement('div');
     wrap.className = 'tline';
     var dragSrcIdx = null;
-
     S.timeline.forEach(function(item, i) {
       var row = document.createElement('div');
       row.className = 'tli' + (item.fut ? ' fut' : '');
       row.draggable = true;
       row.dataset.idx = i;
       row.innerHTML =
-        '<span class="tli-drag" title="Drag to reorder">&#8597;</span>' +
-        '<button class="tli-dot" data-tli-fut="' + i + '" title="' + (item.fut ? 'Mark as past' : 'Mark as future') + '"></button>' +
+        '<span class="tli-drag" title="Drag to reorder">\u2195</span>' +
+        '<button class="tli-dot" data-tli-fut="' + i + '" title="' + (item.fut?'Mark as past':'Mark as future') + '"></button>' +
         '<div class="tli-inner">' +
           '<div class="tld" contenteditable="true" data-tli="' + i + '" data-f="date" spellcheck="false">' + item.date + '</div>' +
           '<div class="tlt" contenteditable="true" data-tli="' + i + '" data-f="text" spellcheck="false">' + item.text + '</div>' +
         '</div>' +
-        '<button class="delbtn" data-del-tli="' + i + '" title="Delete" style="font-size:.65rem;padding:1px 5px;flex-shrink:0;margin-top:3px">&times;</button>';
-
-      // ── drag events ──────────────────────────────────────────
-      row.addEventListener('dragstart', function(e) {
-        dragSrcIdx = parseInt(this.dataset.idx);
-        this.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
+        '<button class="delbtn" data-del-tli="' + i + '" style="flex-shrink:0;margin-top:3px">&times;</button>';
+      row.addEventListener('dragstart', function(e) { dragSrcIdx=parseInt(this.dataset.idx); this.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+      row.addEventListener('dragend',   function() { this.classList.remove('dragging'); wrap.querySelectorAll('.tli').forEach(function(r){r.classList.remove('drag-over-above','drag-over-below');}); });
+      row.addEventListener('dragover',  function(e) {
+        e.preventDefault(); e.dataTransfer.dropEffect='move';
+        var ti=parseInt(this.dataset.idx); if(ti===dragSrcIdx) return;
+        wrap.querySelectorAll('.tli').forEach(function(r){r.classList.remove('drag-over-above','drag-over-below');});
+        var mid=this.getBoundingClientRect().top+this.getBoundingClientRect().height/2;
+        this.classList.add(e.clientY<mid?'drag-over-above':'drag-over-below');
       });
-      row.addEventListener('dragend', function() {
-        this.classList.remove('dragging');
-        wrap.querySelectorAll('.tli').forEach(function(r) {
-          r.classList.remove('drag-over-above', 'drag-over-below');
-        });
-      });
-      row.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        var targetIdx = parseInt(this.dataset.idx);
-        if (targetIdx === dragSrcIdx) return;
-        // determine above/below based on cursor position in element
-        var rect = this.getBoundingClientRect();
-        var mid  = rect.top + rect.height / 2;
-        wrap.querySelectorAll('.tli').forEach(function(r) {
-          r.classList.remove('drag-over-above', 'drag-over-below');
-        });
-        this.classList.add(e.clientY < mid ? 'drag-over-above' : 'drag-over-below');
-      });
-      row.addEventListener('dragleave', function() {
-        this.classList.remove('drag-over-above', 'drag-over-below');
-      });
+      row.addEventListener('dragleave', function() { this.classList.remove('drag-over-above','drag-over-below'); });
       row.addEventListener('drop', function(e) {
         e.preventDefault();
-        var targetIdx = parseInt(this.dataset.idx);
-        if (targetIdx === dragSrcIdx) return;
-        var rect = this.getBoundingClientRect();
-        var mid  = rect.top + rect.height / 2;
-        var insertBefore = e.clientY < mid;
-        // reorder S.timeline
-        var moved = S.timeline.splice(dragSrcIdx, 1)[0];
-        var newTarget = targetIdx > dragSrcIdx ? targetIdx - 1 : targetIdx;
-        var insertAt = insertBefore ? newTarget : newTarget + 1;
-        S.timeline.splice(insertAt, 0, moved);
-        save();
-        renderTimeline();
-      });
-
-      wrap.appendChild(row);
-    });
-
-    el.appendChild(wrap);
-
-    // contenteditable listeners
-    el.querySelectorAll('[data-tli]').forEach(function(ce) {
-      ce.addEventListener('input', function() {
-        S.timeline[parseInt(this.dataset.tli)][this.dataset.f] = this.textContent;
-        save();
-      });
-      ce.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); this.blur(); } });
-    });
-    // delete listeners
-    el.querySelectorAll('[data-del-tli]').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var i = parseInt(this.dataset.delTli);
-        inlineConfirm(this, 'Remove this event?', function() { S.timeline.splice(i,1); save(); renderTimeline(); }, renderTimeline);
-      });
-    });
-    // toggle fut listeners
-    el.querySelectorAll('[data-tli-fut]').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var i = parseInt(this.dataset.tliFut);
-        S.timeline[i].fut = !S.timeline[i].fut;
+        var ti=parseInt(this.dataset.idx); if(ti===dragSrcIdx) return;
+        var mid=this.getBoundingClientRect().top+this.getBoundingClientRect().height/2;
+        var before=e.clientY<mid;
+        var moved=S.timeline.splice(dragSrcIdx,1)[0];
+        var nt=ti>dragSrcIdx?ti-1:ti;
+        S.timeline.splice(before?nt:nt+1,0,moved);
         save(); renderTimeline();
       });
+      wrap.appendChild(row);
+    });
+    el.appendChild(wrap);
+    el.querySelectorAll('[data-tli]').forEach(function(ce) {
+      ce.addEventListener('input', function() { S.timeline[parseInt(this.dataset.tli)][this.dataset.f]=this.textContent; save(); });
+      ce.addEventListener('keydown', function(e) { if(e.key==='Enter'){e.preventDefault();this.blur();} });
+    });
+    el.querySelectorAll('[data-del-tli]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var i=parseInt(this.dataset.delTli);
+        inlineConfirm(this,'Remove this event?',function(){S.timeline.splice(i,1);save();renderTimeline();},renderTimeline);
+      });
+    });
+    el.querySelectorAll('[data-tli-fut]').forEach(function(btn) {
+      btn.addEventListener('click', function() { var i=parseInt(this.dataset.tliFut); S.timeline[i].fut=!S.timeline[i].fut; save(); renderTimeline(); });
     });
   }
-
   document.getElementById('btn-addTL').addEventListener('click', function() {
-    S.timeline.push({date:'New date', text:'New event', fut:true});
-    save(); renderTimeline();
-    // scroll to bottom of timeline
-    var el = document.getElementById('timeline-list');
-    if (el) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+    S.timeline.push({date:'New date',text:'New event',fut:true}); save(); renderTimeline();
   });
 
-  // GIFT CARD TABLE
-  function gcColor(v) {
-    return v==='sent'?'color:var(--green);font-weight:700':v==='need'?'color:var(--salmon);font-weight:700':v==='ineligible'?'color:var(--g4)':'color:var(--g4)';
-  }
-  function renderGC() {
-    var tb = document.getElementById('gctbl');
-    if (!tb) return;
-    tb.innerHTML = '';
-    S.participants.forEach(function(p, pi) {
-      var tr = document.createElement('tr');
-      var fields = ['gc_w1','gc_w2','gc_w4','gc_post'];
-      var cells = '<td><span class="mn">' + (p.id.length>8?p.id.substring(0,8):p.id) + '</span></td>';
-      fields.forEach(function(f) {
-        var v = p[f] || '_';
-        var label = GC_OPTS.find(function(o){return o[0]===v;}); label = label ? label[1] : 'Pending';
-        cells += '<td style="text-align:center;cursor:pointer;' + gcColor(v) + '" data-gc-pi="' + pi + '" data-gc-f="' + f + '" title="Click to cycle">' + GC[v] + '<br><span style="font-size:.6rem">' + label + '</span></td>';
-      });
-      tr.innerHTML = cells;
-      tb.appendChild(tr);
-    });
-    tb.querySelectorAll('[data-gc-pi]').forEach(function(td) {
-      td.addEventListener('click', function() {
-        var pi = parseInt(this.dataset.gcPi);
-        var f  = this.dataset.gcF;
-        var cur = S.participants[pi][f] || '_';
-        var idx = GC_OPTS.findIndex(function(o){return o[0]===cur;});
-        S.participants[pi][f] = GC_OPTS[(idx+1) % GC_OPTS.length][0];
-        save(); renderGC();
-      });
-    });
-  }
-
-  // GRANT MILESTONES
+  // ── MILESTONES ───────────────────────────────────────────────────────
   function renderMilestones() {
     var el = document.getElementById('milestones-list');
     if (!el) return;
@@ -766,7 +675,7 @@ WAVE Study Team</div>
       row.innerHTML =
         '<div class="md" contenteditable="true" data-mi="' + i + '" data-f="date" style="outline:none;cursor:text;border-radius:4px;padding:1px 3px" spellcheck="false">' + m.date + '</div>' +
         '<div class="ml" contenteditable="true" data-mi="' + i + '" data-f="text" style="outline:none;cursor:text;border-radius:4px;padding:1px 3px" spellcheck="false">' + m.text + '</div>' +
-        '<button class="delbtn" data-del-mi="' + i + '" style="font-size:.65rem;padding:1px 5px;flex-shrink:0">&times;</button>';
+        '<button class="delbtn" data-del-mi="' + i + '" style="padding:1px 5px;flex-shrink:0">&times;</button>';
       el.appendChild(row);
     });
     el.querySelectorAll('[data-mi]').forEach(function(ce) {
@@ -777,397 +686,293 @@ WAVE Study Team</div>
     });
     el.querySelectorAll('[data-del-mi]').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        var i = parseInt(this.dataset.delMi);
-        inlineConfirm(this, 'Remove milestone?', function(){ S.milestones.splice(i,1); save(); renderMilestones(); }, renderMilestones);
+        var i=parseInt(this.dataset.delMi);
+        inlineConfirm(this,'Remove milestone?',function(){S.milestones.splice(i,1);save();renderMilestones();},renderMilestones);
       });
     });
   }
   document.getElementById('btn-addMS').addEventListener('click', function() {
-    S.milestones.push({date:'Date', text:'New milestone'});
-    save(); renderMilestones();
+    S.milestones.push({date:'Date',text:'New milestone'}); save(); renderMilestones();
   });
 
-  // INLINE CONFIRM HELPER
-  // Shows "Are you sure? Yes / No" strip in place of the clicked element's row/item.
-  // onYes: callback to run if confirmed. rerender: function to call on No (restore).
-  // el: the element that was clicked (used to find its parent row/container).
-  function inlineConfirm(el, msg, onYes, rerender) {
-    var parent = el.closest('tr') || el.closest('.tki') || el.closest('.al') || el.parentElement;
-    // For table rows, replace with a colspan strip; for divs, replace the element
-    var strip = document.createElement(parent.tagName === 'TR' ? 'tr' : 'div');
-    strip.className = 'confirm-strip';
-    var colCount = parent.tagName === 'TR' ? parent.cells.length : 0;
-    var inner = '<span>' + msg + '</span>' +
-      '<button class="confirm-yes">Delete</button>' +
-      '<button class="confirm-no">Cancel</button>';
-    if (colCount > 0) {
-      strip.innerHTML = '<td colspan="' + colCount + '">' +
-        '<div class="confirm-strip" style="margin:2px 0">' + inner + '</div></td>';
-    } else {
-      strip.innerHTML = inner;
-    }
-    parent.parentNode.insertBefore(strip, parent);
-    parent.style.display = 'none';
-    strip.querySelector('.confirm-yes').addEventListener('click', function() { onYes(); });
-    strip.querySelector('.confirm-no').addEventListener('click', function() {
-      parent.style.display = ''; strip.remove(); if (rerender) rerender();
-    });
-  }
-
-  // TABS
-  document.getElementById('tabBar').addEventListener('click', function(e) {
-    var b = e.target.closest('.tb');
-    if (!b) return;
-    document.querySelectorAll('.tb').forEach(function(x) { x.classList.remove('on'); });
-    document.querySelectorAll('.pnl').forEach(function(x) { x.classList.remove('on'); });
-    b.classList.add('on');
-    document.getElementById('panel-' + b.dataset.tab).classList.add('on');
-  });
-
-  // MEMOS
-  ['overview','participants','recruitment','team','tasks','grant','meetings','workflows'].forEach(function(id) {
-    var el = document.getElementById('memo-' + id);
-    if (!el) return;
-    el.value = S.memos[id] || '';
-    el.addEventListener('input', function() { S.memos[id] = this.value; save(); });
-  });
-
-  // PARTICIPANTS
+  // ── PARTICIPANTS ─────────────────────────────────────────────────────
   function pBadge(p) {
-    if (p.status === 'dropped')   return '<span class="b bk">Dropped</span>';
-    if (p.status === 'completed') return '<span class="b bd">Completed</span>';
+    if (p.status==='dropped')   return '<span class="b bk">Dropped</span>';
+    if (p.status==='completed') return '<span class="b bd">Completed</span>';
     return '<span class="b ba">Active</span>';
   }
   function renderP() {
     var tb = document.getElementById('ptbl');
     tb.innerHTML = '';
     S.participants.forEach(function(p, i) {
-      var wk = ['w1','w2','w3','w4'].map(function(w) {
-        return '<td style="text-align:center">' + (WI[p[w]] || '\u2B1C') + '</td>';
-      }).join('');
+      var wk = ['w1','w2','w3','w4'].map(function(w) { return '<td style="text-align:center">'+(WI[p[w]]||'\u2B1C')+'</td>'; }).join('');
       var tr = document.createElement('tr');
       tr.innerHTML =
-        '<td><span class="mn" style="cursor:pointer;text-decoration:underline dotted" data-ei="' + i + '">' +
-        (p.id.length > 8 ? p.id.substring(0,8) : p.id) + '</span></td>' +
-        '<td style="text-align:center">' + (p.pre === 'done' ? '\u2705' : '\u2B1C') + '</td>' +
-        wk +
-        '<td style="text-align:center">' + (p.post === 'done' ? '\u2705' : p.post === 'n/a' ? '\u2014' : '\u2B1C') + '</td>' +
-        '<td>' + pBadge(p) + '</td>' +
-        '<td><button class="delbtn" data-del-p="' + i + '" title="Delete">&times;</button></td>';
+        '<td><span class="mn" style="cursor:pointer;text-decoration:underline dotted" data-ei="'+i+'">'+(p.id.length>8?p.id.substring(0,8):p.id)+'</span></td>'+
+        '<td style="text-align:center">'+(p.pre==='done'?'\u2705':'\u2B1C')+'</td>'+
+        wk+
+        '<td style="text-align:center">'+(WI[p.post]||'\u2B1C')+'</td>'+
+        '<td>'+pBadge(p)+'</td>'+
+        '<td><button class="delbtn" data-del-p="'+i+'" title="Delete">&times;</button></td>';
       tb.appendChild(tr);
     });
-    tb.querySelectorAll('[data-ei]').forEach(function(el) {
-      el.addEventListener('click', function() { openEditP(parseInt(this.dataset.ei)); });
-    });
+    tb.querySelectorAll('[data-ei]').forEach(function(el) { el.addEventListener('click', function() { openEditP(parseInt(this.dataset.ei)); }); });
     tb.querySelectorAll('[data-del-p]').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        var i = parseInt(this.dataset.delP);
-        var msg = 'Remove participant ' + S.participants[i].id + '?';
-        inlineConfirm(this, msg, function() { S.participants.splice(i,1); save(); renderP(); }, renderP);
+        var i=parseInt(this.dataset.delP);
+        inlineConfirm(this,'Remove participant "'+S.participants[i].id+'"?',function(){S.participants.splice(i,1);save();renderP();renderGC();},renderP);
       });
     });
-    var n    = S.participants.length;
-    var comp = S.participants.filter(function(p) { return p.status === 'completed'; }).length;
-    var drop = S.participants.filter(function(p) { return p.status === 'dropped';   }).length;
-    document.getElementById('s-enr').textContent = n;
-    document.getElementById('s-act').textContent = n - comp - drop;
-    document.getElementById('s-cmp').textContent = comp;
-    document.getElementById('s-drp').textContent = drop;
-    var pct = Math.round((n / 20) * 100);
-    document.getElementById('p-pct').textContent = pct + '%';
-    document.getElementById('p-bar').style.width = pct + '%';
+    var n=S.participants.length, comp=S.participants.filter(function(p){return p.status==='completed';}).length, drop=S.participants.filter(function(p){return p.status==='dropped';}).length;
+    document.getElementById('s-enr').textContent=n;
+    document.getElementById('s-act').textContent=n-comp-drop;
+    document.getElementById('s-cmp').textContent=comp;
+    document.getElementById('s-drp').textContent=drop;
+    var pct=Math.round((n/20)*100);
+    document.getElementById('p-pct').textContent=pct+'%';
+    document.getElementById('p-bar').style.width=pct+'%';
+  }
+
+  // ── GIFT CARDS ───────────────────────────────────────────────────────
+  function gcColor(v) { return v==='sent'?'color:var(--green);font-weight:700':v==='need'?'color:var(--salmon);font-weight:700':'color:var(--g4)'; }
+  function renderGC() {
+    var tb = document.getElementById('gctbl');
+    if (!tb) return;
+    tb.innerHTML = '';
+    S.participants.forEach(function(p, pi) {
+      var tr = document.createElement('tr');
+      var cells = '<td><span class="mn">'+(p.id.length>8?p.id.substring(0,8):p.id)+'</span></td>';
+      ['gc_w1','gc_w2','gc_w4','gc_post'].forEach(function(f) {
+        var v=p[f]||'_'; var lbl=GC_OPTS.find(function(o){return o[0]===v;}); lbl=lbl?lbl[1]:'Pending';
+        cells+='<td style="text-align:center;cursor:pointer;'+gcColor(v)+'" data-gc-pi="'+pi+'" data-gc-f="'+f+'" title="Click to cycle">'+GC[v]+'<br><span style="font-size:.6rem">'+lbl+'</span></td>';
+      });
+      tr.innerHTML=cells; tb.appendChild(tr);
+    });
+    tb.querySelectorAll('[data-gc-pi]').forEach(function(td) {
+      td.addEventListener('click', function() {
+        var pi=parseInt(this.dataset.gcPi), f=this.dataset.gcF;
+        var cur=S.participants[pi][f]||'_';
+        var idx=GC_OPTS.findIndex(function(o){return o[0]===cur;});
+        S.participants[pi][f]=GC_OPTS[(idx+1)%GC_OPTS.length][0];
+        save(); renderGC();
+      });
+    });
   }
 
   var editIdx = -1;
   function setModal(p) {
-    document.getElementById('m-pid').value  = p ? p.id     : '';
-    document.getElementById('m-st').value   = p ? p.status : 'active';
-    document.getElementById('m-pre').value  = p ? p.pre    : '_';
-    document.getElementById('m-w1').value   = p ? p.w1     : '_';
-    document.getElementById('m-w2').value   = p ? p.w2     : '_';
-    document.getElementById('m-w3').value   = p ? p.w3     : '_';
-    document.getElementById('m-w4').value   = p ? p.w4     : '_';
-    document.getElementById('m-post').value = p ? p.post   : '_';
+    document.getElementById('m-pid').value  = p?p.id:'';
+    document.getElementById('m-st').value   = p?p.status:'active';
+    document.getElementById('m-pre').value  = p?p.pre:'_';
+    document.getElementById('m-w1').value   = p?p.w1:'_';
+    document.getElementById('m-w2').value   = p?p.w2:'_';
+    document.getElementById('m-w3').value   = p?p.w3:'_';
+    document.getElementById('m-w4').value   = p?p.w4:'_';
+    document.getElementById('m-post').value = p?p.post:'_';
   }
-  function openEditP(i) {
-    editIdx = i; setModal(S.participants[i]);
-    document.getElementById('ov-p-title').textContent = 'Edit Participant';
-    document.getElementById('ov-p').classList.add('open');
-  }
-  document.getElementById('btn-addP').addEventListener('click', function() {
-    editIdx = -1; setModal(null);
-    document.getElementById('ov-p-title').textContent = 'Add Participant';
-    document.getElementById('ov-p').classList.add('open');
-  });
+  function openEditP(i) { editIdx=i; setModal(S.participants[i]); document.getElementById('ov-p-title').textContent='Edit Participant'; document.getElementById('ov-p').classList.add('open'); }
+  document.getElementById('btn-addP').addEventListener('click', function() { editIdx=-1; setModal(null); document.getElementById('ov-p-title').textContent='Add Participant'; document.getElementById('ov-p').classList.add('open'); });
   document.getElementById('btn-cancelP').addEventListener('click', function() { document.getElementById('ov-p').classList.remove('open'); });
   document.getElementById('btn-saveP').addEventListener('click', function() {
-    var id = document.getElementById('m-pid').value.trim();
-    if (!id) { alert('Please enter a WAVE ID.'); return; }
-    var p = {id:id, status:document.getElementById('m-st').value,
-      pre:document.getElementById('m-pre').value, w1:document.getElementById('m-w1').value,
-      w2:document.getElementById('m-w2').value,   w3:document.getElementById('m-w3').value,
-      w4:document.getElementById('m-w4').value,   post:document.getElementById('m-post').value};
-    if (!p.gc_w1)   p.gc_w1   = '_';
-    if (!p.gc_w2)   p.gc_w2   = '_';
-    if (!p.gc_w4)   p.gc_w4   = '_';
-    if (!p.gc_post) p.gc_post = '_';
-    if (editIdx >= 0) S.participants[editIdx] = p; else S.participants.push(p);
+    var id=document.getElementById('m-pid').value.trim(); if(!id){alert('Enter a WAVE ID.');return;}
+    var p={id:id,status:document.getElementById('m-st').value,pre:document.getElementById('m-pre').value,
+      w1:document.getElementById('m-w1').value,w2:document.getElementById('m-w2').value,
+      w3:document.getElementById('m-w3').value,w4:document.getElementById('m-w4').value,
+      post:document.getElementById('m-post').value,gc_w1:'_',gc_w2:'_',gc_w4:'_',gc_post:'_'};
+    if(editIdx>=0){var old=S.participants[editIdx]; p.gc_w1=old.gc_w1||'_';p.gc_w2=old.gc_w2||'_';p.gc_w4=old.gc_w4||'_';p.gc_post=old.gc_post||'_'; S.participants[editIdx]=p;}
+    else S.participants.push(p);
     save(); renderP(); renderGC(); document.getElementById('ov-p').classList.remove('open');
   });
   document.getElementById('btn-csv').addEventListener('click', function() {
-    var csv = 'WAVE_ID,Pre,W1,W2,W3,W4,Post,Status\n';
-    S.participants.forEach(function(p) { csv += [p.id,p.pre,p.w1,p.w2,p.w3,p.w4,p.post,p.status].join(',') + '\n'; });
-    var a = document.createElement('a');
-    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-    a.download = 'WAVE_participants.csv';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    var csv='WAVE_ID,Pre,W1,W2,W3,W4,Post,Status,GC_W1,GC_W2,GC_W4,GC_Post\n';
+    S.participants.forEach(function(p){csv+=[p.id,p.pre,p.w1,p.w2,p.w3,p.w4,p.post,p.status,p.gc_w1,p.gc_w2,p.gc_w4,p.gc_post].join(',')+'\n';});
+    var a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download='WAVE_participants.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
   });
 
-  // RECRUITMENT
-  var RSTAT = ['recruiting','in-progress','no','paused'];
+  // ── RECRUITMENT ──────────────────────────────────────────────────────
+  var RSTAT=['recruiting','in-progress','no','paused'];
   function renderRec() {
-    var tb = document.getElementById('rec-body'); tb.innerHTML = '';
-    S.recruitment.forEach(function(r, i) {
-      var opts = RSTAT.map(function(s) { return '<option value="'+s+'"'+(s===r.status?' selected':'')+'>'+s+'</option>'; }).join('');
-      var tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td contenteditable="true" data-ri="'+i+'" data-f="site">'+r.site+'</td>' +
-        '<td contenteditable="true" data-ri="'+i+'" data-f="owner">'+r.owner+'</td>' +
-        '<td contenteditable="true" data-ri="'+i+'" data-f="last">'+r.last+'</td>' +
-        '<td><select class="ssel" data-ri="'+i+'">'+opts+'</select></td>' +
-        '<td contenteditable="true" data-ri="'+i+'" data-f="note">'+r.note+'</td>' +
-        '<td><button class="delbtn" data-del-ri="'+i+'" title="Delete">&times;</button></td>';
+    var tb=document.getElementById('rec-body'); tb.innerHTML='';
+    S.recruitment.forEach(function(r,i){
+      var opts=RSTAT.map(function(s){return '<option value="'+s+'"'+(s===r.status?' selected':'')+'>'+s+'</option>';}).join('');
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td contenteditable="true" data-ri="'+i+'" data-f="site">'+r.site+'</td>'+
+        '<td contenteditable="true" data-ri="'+i+'" data-f="owner">'+r.owner+'</td>'+
+        '<td contenteditable="true" data-ri="'+i+'" data-f="last">'+r.last+'</td>'+
+        '<td><select class="ssel" data-ri="'+i+'">'+opts+'</select></td>'+
+        '<td contenteditable="true" data-ri="'+i+'" data-f="note">'+r.note+'</td>'+
+        '<td><button class="delbtn" data-del-ri="'+i+'">&times;</button></td>';
       tb.appendChild(tr);
     });
-    tb.querySelectorAll('[contenteditable]').forEach(function(el) {
-      el.addEventListener('input', function() { S.recruitment[parseInt(this.dataset.ri)][this.dataset.f] = this.textContent; save(); });
-    });
-    tb.querySelectorAll('.ssel[data-ri]').forEach(function(el) {
-      el.addEventListener('change', function() { S.recruitment[parseInt(this.dataset.ri)].status = this.value; save(); });
-    });
-    tb.querySelectorAll('[data-del-ri]').forEach(function(el) {
-      el.addEventListener('click', function() {
-        var i = parseInt(this.dataset.delRi);
-        inlineConfirm(this, 'Remove ' + S.recruitment[i].site + '?', function() { S.recruitment.splice(i,1); save(); renderRec(); }, renderRec);
-      });
+    tb.querySelectorAll('[contenteditable]').forEach(function(el){el.addEventListener('input',function(){S.recruitment[parseInt(this.dataset.ri)][this.dataset.f]=this.textContent;save();});});
+    tb.querySelectorAll('.ssel[data-ri]').forEach(function(el){el.addEventListener('change',function(){S.recruitment[parseInt(this.dataset.ri)].status=this.value;save();});});
+    tb.querySelectorAll('[data-del-ri]').forEach(function(el){
+      el.addEventListener('click',function(){var i=parseInt(this.dataset.delRi); inlineConfirm(this,'Remove "'+S.recruitment[i].site+'"?',function(){S.recruitment.splice(i,1);save();renderRec();},renderRec);});
     });
   }
-  document.getElementById('btn-addRec').addEventListener('click', function() {
-    S.recruitment.push({site:'New site',owner:'',last:'',status:'paused',note:''});
-    save(); renderRec();
-  });
+  document.getElementById('btn-addRec').addEventListener('click',function(){S.recruitment.push({site:'New site',owner:'',last:'',status:'paused',note:''});save();renderRec();});
 
-  // AVAILABILITY
-  var DAYS = ['sun','mon','tue','wed','thu','fri','sat'];
+  // ── AVAILABILITY ─────────────────────────────────────────────────────
+  var DAYS=['sun','mon','tue','wed','thu','fri','sat'];
   function renderAvail() {
-    var tb = document.getElementById('avail-body'); tb.innerHTML = '';
-    S.avail.forEach(function(row, i) {
-      var tr = document.createElement('tr');
-      var cells = '<td contenteditable="true" data-ai="'+i+'" data-f="time" style="font-family:monospace;font-size:.7rem">'+row.time+'</td>';
-      DAYS.forEach(function(d) { cells += '<td contenteditable="true" data-ai="'+i+'" data-f="'+d+'">'+row[d]+'</td>'; });
-      cells += '<td><button class="delbtn" data-del-ai="'+i+'" title="Delete">&times;</button></td>';
-      tr.innerHTML = cells; tb.appendChild(tr);
+    var tb=document.getElementById('avail-body'); tb.innerHTML='';
+    S.avail.forEach(function(row,i){
+      var tr=document.createElement('tr');
+      var cells='<td contenteditable="true" data-ai="'+i+'" data-f="time" style="font-family:monospace;font-size:.7rem">'+row.time+'</td>';
+      DAYS.forEach(function(d){cells+='<td contenteditable="true" data-ai="'+i+'" data-f="'+d+'">'+row[d]+'</td>';});
+      cells+='<td><button class="delbtn" data-del-ai="'+i+'">&times;</button></td>';
+      tr.innerHTML=cells; tb.appendChild(tr);
     });
-    tb.querySelectorAll('[contenteditable]').forEach(function(el) {
-      el.addEventListener('input', function() { S.avail[parseInt(this.dataset.ai)][this.dataset.f] = this.textContent; save(); });
-    });
-    tb.querySelectorAll('[data-del-ai]').forEach(function(el) {
-      el.addEventListener('click', function() {
-        var i=parseInt(this.dataset.delAi);
-        inlineConfirm(this, 'Remove row?', function(){ S.avail.splice(i,1); save(); renderAvail(); }, renderAvail);
-      });
-    });
+    tb.querySelectorAll('[contenteditable]').forEach(function(el){el.addEventListener('input',function(){S.avail[parseInt(this.dataset.ai)][this.dataset.f]=this.textContent;save();});});
+    tb.querySelectorAll('[data-del-ai]').forEach(function(el){el.addEventListener('click',function(){var i=parseInt(this.dataset.delAi);S.avail.splice(i,1);save();renderAvail();});});
   }
-  document.getElementById('btn-addAvail').addEventListener('click', function() {
-    S.avail.push({time:'',sun:'',mon:'',tue:'',wed:'',thu:'',fri:'',sat:''});
-    save(); renderAvail();
-  });
+  document.getElementById('btn-addAvail').addEventListener('click',function(){S.avail.push({time:'',sun:'',mon:'',tue:'',wed:'',thu:'',fri:'',sat:''});save();renderAvail();});
 
-  // TASKS
+  // ── TASKS ─────────────────────────────────────────────────────────────
   function renderTasks() {
-    var el = document.getElementById('task-list'); el.innerHTML = '';
-    S.tasks.forEach(function(t, i) {
-      var div = document.createElement('div'); div.className = 'tki';
-      div.innerHTML =
-        '<div class="tcb' + (t.done ? ' chk' : '') + '" data-ti="'+i+'"></div>' +
-        '<div class="tx' + (t.done ? ' dn' : '') + '">' + t.text + '</div>' +
-        '<div class="tow">' + t.owner + '</div>' +
-        '<button class="delbtn" data-del-t="'+i+'" title="Delete">&times;</button>';
+    var el=document.getElementById('task-list'); el.innerHTML='';
+    S.tasks.forEach(function(t,i){
+      var div=document.createElement('div'); div.className='tki';
+      div.innerHTML='<div class="tcb'+(t.done?' chk':'')+'" data-ti="'+i+'"></div>'+
+        '<div class="tx'+(t.done?' dn':'')+'">'+t.text+'</div>'+
+        '<div class="tow">'+t.owner+'</div>'+
+        '<button class="delbtn" data-del-t="'+i+'">&times;</button>';
       el.appendChild(div);
     });
-    el.querySelectorAll('.tcb').forEach(function(cb) {
-      cb.addEventListener('click', function() {
-        var i = parseInt(this.dataset.ti); S.tasks[i].done = !S.tasks[i].done; save(); renderTasks();
-      });
-    });
-    el.querySelectorAll('[data-del-t]').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var i = parseInt(this.dataset.delT);
-        inlineConfirm(this, 'Delete task?', function() { S.tasks.splice(i,1); save(); renderTasks(); }, renderTasks);
-      });
+    el.querySelectorAll('.tcb').forEach(function(cb){cb.addEventListener('click',function(){var i=parseInt(this.dataset.ti);S.tasks[i].done=!S.tasks[i].done;save();renderTasks();});});
+    el.querySelectorAll('[data-del-t]').forEach(function(btn){
+      btn.addEventListener('click',function(){var i=parseInt(this.dataset.delT); inlineConfirm(this,'Delete task?',function(){S.tasks.splice(i,1);save();renderTasks();},renderTasks);});
     });
   }
-  document.getElementById('btn-addTask').addEventListener('click', function() {
-    document.getElementById('m-ttxt').value = ''; document.getElementById('m-town').value = '';
-    document.getElementById('ov-t').classList.add('open');
-  });
-  document.getElementById('btn-cancelT').addEventListener('click', function() { document.getElementById('ov-t').classList.remove('open'); });
-  document.getElementById('btn-saveT').addEventListener('click', function() {
-    var txt = document.getElementById('m-ttxt').value.trim();
-    if (!txt) { alert('Enter a task description.'); return; }
-    S.tasks.push({text:txt, owner:document.getElementById('m-town').value.trim()||'?', done:false});
+  document.getElementById('btn-addTask').addEventListener('click',function(){document.getElementById('m-ttxt').value='';document.getElementById('m-town').value='';document.getElementById('ov-t').classList.add('open');});
+  document.getElementById('btn-cancelT').addEventListener('click',function(){document.getElementById('ov-t').classList.remove('open');});
+  document.getElementById('btn-saveT').addEventListener('click',function(){
+    var txt=document.getElementById('m-ttxt').value.trim(); if(!txt){alert('Enter a task.');return;}
+    S.tasks.push({text:txt,owner:document.getElementById('m-town').value.trim()||'?',done:false});
     save(); renderTasks(); document.getElementById('ov-t').classList.remove('open');
   });
 
-  // AIMS
-  var AIM_ST = ['Drafted','In progress','Pending','Complete'];
+  // ── AIMS ─────────────────────────────────────────────────────────────
+  var AIM_ST=['Drafted','In progress','Pending','Complete'];
   function renderAims() {
-    var tb = document.getElementById('aims-body'); tb.innerHTML = '';
-    S.aims.forEach(function(a, i) {
-      var opts = AIM_ST.map(function(s) { return '<option'+(s===a.status?' selected':'')+'>'+s+'</option>'; }).join('');
-      var tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td contenteditable="true" data-aim="'+i+'" data-f="aim" style="font-weight:700;color:var(--ch)">'+a.aim+'</td>' +
-        '<td contenteditable="true" data-aim="'+i+'" data-f="focus">'+a.focus+'</td>' +
+    var tb=document.getElementById('aims-body'); tb.innerHTML='';
+    S.aims.forEach(function(a,i){
+      var opts=AIM_ST.map(function(s){return '<option'+(s===a.status?' selected':'')+'>'+s+'</option>';}).join('');
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td contenteditable="true" data-aim="'+i+'" data-f="aim" style="font-weight:700;color:var(--ch)">'+a.aim+'</td>'+
+        '<td contenteditable="true" data-aim="'+i+'" data-f="focus">'+a.focus+'</td>'+
         '<td><select class="ssel" data-aim="'+i+'">'+opts+'</select></td>';
       tb.appendChild(tr);
     });
-    tb.querySelectorAll('[contenteditable]').forEach(function(el) {
-      el.addEventListener('input', function() { S.aims[parseInt(this.dataset.aim)][this.dataset.f] = this.textContent; save(); });
-    });
-    tb.querySelectorAll('.ssel[data-aim]').forEach(function(el) {
-      el.addEventListener('change', function() { S.aims[parseInt(this.dataset.aim)].status = this.value; save(); });
-    });
+    tb.querySelectorAll('[contenteditable]').forEach(function(el){el.addEventListener('input',function(){S.aims[parseInt(this.dataset.aim)][this.dataset.f]=this.textContent;save();});});
+    tb.querySelectorAll('.ssel[data-aim]').forEach(function(el){el.addEventListener('change',function(){S.aims[parseInt(this.dataset.aim)].status=this.value;save();});});
   }
 
-  // LIT REVIEW
-  var LIT_ST = ['Extracted','Pending','In progress','Not started'];
+  // ── LIT REVIEW ───────────────────────────────────────────────────────
+  var LIT_ST=['Extracted','Pending','In progress','Not started'];
   function renderLit() {
-    var tb = document.getElementById('lit-body'); tb.innerHTML = '';
-    S.lit.forEach(function(l, i) {
-      var opts = LIT_ST.map(function(s) { return '<option'+(s===l.status?' selected':'')+'>'+s+'</option>'; }).join('');
-      var tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td contenteditable="true" data-li="'+i+'" data-f="paper" style="font-weight:700;color:var(--ch)">'+l.paper+'</td>' +
-        '<td contenteditable="true" data-li="'+i+'" data-f="data">'+l.data+'</td>' +
-        '<td><select class="ssel" data-li="'+i+'">'+opts+'</select></td>' +
-        '<td><button class="delbtn" data-del-li="'+i+'" title="Delete">&times;</button></td>';
+    var tb=document.getElementById('lit-body'); tb.innerHTML='';
+    S.lit.forEach(function(l,i){
+      var opts=LIT_ST.map(function(s){return '<option'+(s===l.status?' selected':'')+'>'+s+'</option>';}).join('');
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td contenteditable="true" data-li="'+i+'" data-f="paper" style="font-weight:700;color:var(--ch)">'+l.paper+'</td>'+
+        '<td contenteditable="true" data-li="'+i+'" data-f="data">'+l.data+'</td>'+
+        '<td><select class="ssel" data-li="'+i+'">'+opts+'</select></td>'+
+        '<td><button class="delbtn" data-del-li="'+i+'">&times;</button></td>';
       tb.appendChild(tr);
     });
-    tb.querySelectorAll('[contenteditable]').forEach(function(el) {
-      el.addEventListener('input', function() { S.lit[parseInt(this.dataset.li)][this.dataset.f] = this.textContent; save(); });
-    });
-    tb.querySelectorAll('.ssel[data-li]').forEach(function(el) {
-      el.addEventListener('change', function() { S.lit[parseInt(this.dataset.li)].status = this.value; save(); });
-    });
-    tb.querySelectorAll('[data-del-li]').forEach(function(el) {
-      el.addEventListener('click', function() {
-        var i=parseInt(this.dataset.delLi);
-        inlineConfirm(this, 'Remove paper?', function(){ S.lit.splice(i,1); save(); renderLit(); }, renderLit);
-      });
-    });
+    tb.querySelectorAll('[contenteditable]').forEach(function(el){el.addEventListener('input',function(){S.lit[parseInt(this.dataset.li)][this.dataset.f]=this.textContent;save();});});
+    tb.querySelectorAll('.ssel[data-li]').forEach(function(el){el.addEventListener('change',function(){S.lit[parseInt(this.dataset.li)].status=this.value;save();});});
+    tb.querySelectorAll('[data-del-li]').forEach(function(el){el.addEventListener('click',function(){var i=parseInt(this.dataset.delLi); inlineConfirm(this,'Remove paper?',function(){S.lit.splice(i,1);save();renderLit();},renderLit);});});
   }
-  document.getElementById('btn-addLit').addEventListener('click', function() {
-    S.lit.push({paper:'New paper',data:'',status:'Not started'}); save(); renderLit();
-  });
+  document.getElementById('btn-addLit').addEventListener('click',function(){S.lit.push({paper:'New paper',data:'',status:'Not started'});save();renderLit();});
 
-  // FLAGS
+  // ── FLAGS ─────────────────────────────────────────────────────────────
   function renderFlags() {
-    var el = document.getElementById('flags-list'); el.innerHTML = '';
-    S.flags.forEach(function(f, i) {
-      var div = document.createElement('div'); div.className = 'al ' + f.type;
-      div.innerHTML =
-        '<span contenteditable="true" data-fi="'+i+'" style="flex:1;outline:none;min-width:0">'+f.text+'</span>' +
-        '<button class="delbtn" data-del-fi="'+i+'" style="flex-shrink:0;margin-left:6px" title="Remove">&times;</button>';
+    var el=document.getElementById('flags-list'); el.innerHTML='';
+    S.flags.forEach(function(f,i){
+      var div=document.createElement('div'); div.className='al '+f.type;
+      div.innerHTML='<span contenteditable="true" data-fi="'+i+'" style="flex:1;outline:none;min-width:0">'+f.text+'</span>'+
+        '<button class="delbtn" data-del-fi="'+i+'" style="flex-shrink:0;margin-left:6px">&times;</button>';
       el.appendChild(div);
     });
-    el.querySelectorAll('[data-fi]').forEach(function(el) {
-      el.addEventListener('input', function() { S.flags[parseInt(this.dataset.fi)].text = this.textContent; save(); });
-    });
-    el.querySelectorAll('[data-del-fi]').forEach(function(el) {
-      el.addEventListener('click', function() { var i=parseInt(this.dataset.delFi); S.flags.splice(i,1); save(); renderFlags(); });
-    });
+    el.querySelectorAll('[data-fi]').forEach(function(el){el.addEventListener('input',function(){S.flags[parseInt(this.dataset.fi)].text=this.textContent;save();});});
+    el.querySelectorAll('[data-del-fi]').forEach(function(el){el.addEventListener('click',function(){var i=parseInt(this.dataset.delFi);S.flags.splice(i,1);save();renderFlags();});});
   }
-  document.getElementById('btn-addFlag').addEventListener('click', function() {
-    document.getElementById('m-ftxt').value = ''; document.getElementById('ov-f').classList.add('open');
-  });
-  document.getElementById('btn-cancelF').addEventListener('click', function() { document.getElementById('ov-f').classList.remove('open'); });
-  document.getElementById('btn-saveF').addEventListener('click', function() {
-    var txt = document.getElementById('m-ftxt').value.trim();
-    if (!txt) { alert('Enter a message.'); return; }
-    S.flags.push({type:document.getElementById('m-ftype').value, text:txt});
+  document.getElementById('btn-addFlag').addEventListener('click',function(){document.getElementById('m-ftxt').value='';document.getElementById('ov-f').classList.add('open');});
+  document.getElementById('btn-cancelF').addEventListener('click',function(){document.getElementById('ov-f').classList.remove('open');});
+  document.getElementById('btn-saveF').addEventListener('click',function(){
+    var txt=document.getElementById('m-ftxt').value.trim(); if(!txt){alert('Enter a message.');return;}
+    S.flags.push({type:document.getElementById('m-ftype').value,text:txt});
     save(); renderFlags(); document.getElementById('ov-f').classList.remove('open');
   });
 
-  // MEETINGS
+  // ── MEETINGS ─────────────────────────────────────────────────────────
   function renderMeetings() {
-    var el = document.getElementById('mtg-list'); el.innerHTML = '';
-    S.meetings.slice().reverse().forEach(function(m, ri) {
-      var idx = S.meetings.length - 1 - ri;
-      var wrap = document.createElement('div'); wrap.style.marginBottom = '12px';
-      var lbl = document.createElement('div'); lbl.className = 'mdate'; lbl.textContent = '📅 ' + m.date;
-      var ta = document.createElement('textarea'); ta.className = 'na'; ta.placeholder = 'Meeting notes...'; ta.value = m.notes;
-      ta.addEventListener('input', (function(idx) { return function() { S.meetings[idx].notes = this.value; save(); }; })(idx));
+    var el=document.getElementById('mtg-list'); el.innerHTML='';
+    S.meetings.slice().reverse().forEach(function(m,ri){
+      var idx=S.meetings.length-1-ri;
+      var wrap=document.createElement('div'); wrap.style.marginBottom='12px';
+      var lbl=document.createElement('div'); lbl.className='mdate'; lbl.textContent='\uD83D\uDCC5 '+m.date;
+      var ta=document.createElement('textarea'); ta.className='na'; ta.placeholder='Meeting notes...'; ta.value=m.notes;
+      ta.addEventListener('input',(function(idx){return function(){S.meetings[idx].notes=this.value;save();};})(idx));
       wrap.appendChild(lbl); wrap.appendChild(ta); el.appendChild(wrap);
     });
   }
-  document.getElementById('btn-addMtg').addEventListener('click', function() {
-    S.meetings.push({date:new Date().toISOString().split('T')[0], notes:''});
+  document.getElementById('btn-addMtg').addEventListener('click',function(){
+    S.meetings.push({date:new Date().toISOString().split('T')[0],notes:''});
     save(); renderMeetings();
   });
 
-
-
-  // WORKFLOW ACCORDIONS
-  document.querySelectorAll('.wfh').forEach(function(hdr) {
-    hdr.addEventListener('click', function() {
-      var body = document.getElementById(this.dataset.wf);
-      var open = body.style.display !== 'block';
-      body.style.display = open ? 'block' : 'none';
-      this.querySelector('span:last-child').innerHTML = open ? '&#9650;' : '&#9660;';
+  // ── WORKFLOW ACCORDIONS ───────────────────────────────────────────────
+  document.querySelectorAll('.wfh').forEach(function(hdr){
+    hdr.addEventListener('click',function(){
+      var body=document.getElementById(this.dataset.wf);
+      var open=body.style.display!=='block';
+      body.style.display=open?'block':'none';
+      this.querySelector('span:last-child').innerHTML=open?'&#9650;':'&#9660;';
     });
   });
 
-  // SHARE
-  document.getElementById('fab').addEventListener('click', function() {
-    var btn = this;
-    function flash() { btn.textContent = '\u2713 Copied!'; setTimeout(function() { btn.innerHTML = '&#128279; Share'; }, 2500); }
-    try {
-      var url = window.location.href.split('?')[0] + '?data=' + encodeURIComponent(JSON.stringify(S));
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(flash).catch(function() {
-          var ta = document.createElement('textarea'); ta.value = url; ta.style.cssText = 'position:fixed;opacity:0';
-          document.body.appendChild(ta); ta.focus(); ta.select(); try { document.execCommand('copy'); } catch(e) {}
-          document.body.removeChild(ta); flash();
-        });
-      } else {
-        var ta = document.createElement('textarea'); ta.value = url; ta.style.cssText = 'position:fixed;opacity:0';
-        document.body.appendChild(ta); ta.focus(); ta.select(); try { document.execCommand('copy'); } catch(e) {}
-        document.body.removeChild(ta); flash();
-      }
-    } catch(e) { flash(); }
+  // ── SHARE ─────────────────────────────────────────────────────────────
+  document.getElementById('fab').addEventListener('click',function(){
+    var btn=this;
+    function flash(){btn.textContent='\u2713 Copied!';setTimeout(function(){btn.innerHTML='&#128279; Share';},2500);}
+    var url=window.location.href.split('?')[0]+'?bin='+BIN_ID;
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(flash).catch(function(){fallback();});}
+    else{fallback();}
+    function fallback(){var ta=document.createElement('textarea');ta.value=url;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);flash();}
   });
 
-  // CLOSE MODALS
-  document.querySelectorAll('.ov').forEach(function(ov) {
-    ov.addEventListener('click', function(e) { if (e.target === ov) ov.classList.remove('open'); });
-  });
+  // ── CLOSE MODALS ─────────────────────────────────────────────────────
+  document.querySelectorAll('.ov').forEach(function(ov){ov.addEventListener('click',function(e){if(e.target===ov)ov.classList.remove('open');});});
 
-  // INIT
-  dispUpdated();
-  renderTimeline();
-  renderMilestones();
-  renderP();
-  renderGC();
-  renderRec();
-  renderAvail();
-  renderTasks();
-  renderAims();
-  renderLit();
-  renderFlags();
-  renderMeetings();
+  // ── RENDER ALL ────────────────────────────────────────────────────────
+  function renderAll() {
+    dispUpdated();
+    initHTRI();
+    renderTimeline();
+    renderMilestones();
+    renderP();
+    renderGC();
+    renderRec();
+    renderAvail();
+    renderTasks();
+    renderAims();
+    renderLit();
+    renderFlags();
+    renderMeetings();
+    // restore memos
+    ['overview','participants','recruitment','team','tasks','grant','meetings','workflows'].forEach(function(id){
+      var el=document.getElementById('memo-'+id); if(el) el.value=S.memos[id]||'';
+    });
+  }
+
+  // ── INIT: load from JSONbin then render ───────────────────────────────
+  loadFromBin(renderAll);
 
 })();
+
 </script>
 </body>
 </html>
